@@ -1,21 +1,26 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
-import { AppComponent } from './app.component';
 import { NgxsModule } from "@ngxs/store";
 import { NgxsReduxDevtoolsPluginModule } from "@ngxs/devtools-plugin";
 import { NgxsLoggerPluginModule } from "@ngxs/logger-plugin";
 import { HttpClientModule } from "@angular/common/http";
 import { ReactiveFormsModule } from "@angular/forms";
 import { LayoutsModule } from "./layouts/layouts.module";
+import { RouterModule } from "@angular/router";
+
+import { AppComponent } from './app.component';
+import { HomeComponent } from './pages/home/home.component';
 
 import { environment } from "../environments/environment";
 import { appConfig } from "../config/app.config";
-import { RouterModule } from "@angular/router";
+import { appRoutes } from "./app.router";
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
@@ -27,7 +32,7 @@ import { RouterModule } from "@angular/router";
     NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxsLoggerPluginModule.forRoot(),
     ReactiveFormsModule,
-    RouterModule
+    RouterModule.forRoot(appRoutes)
   ],
   providers: [
     {

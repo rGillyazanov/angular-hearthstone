@@ -16,3 +16,9 @@
     -webkit-overflow-scrolling: touch;
   }
 }
+
+.router-progress-bar {
+  height: 2px;
+  background-color: red;
+  transition: width 0.3s ease;
+}

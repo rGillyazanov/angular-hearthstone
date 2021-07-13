@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { routerPaths } from "../../../app.router";
 
 @Component({
   selector: 'app-subheader',
@@ -6,8 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./subheader.component.scss']
 })
 export class SubheaderComponent implements OnInit {
+  routerPaths;
 
-  constructor() { }
+  constructor() {
+    this.routerPaths = routerPaths;
+  }
 
   ngOnInit(): void {
   }

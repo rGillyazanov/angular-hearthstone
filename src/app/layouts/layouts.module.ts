@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { HeaderComponent } from "./header/header.component";
 import { FooterComponent } from "./footer/footer.component";
 import { SubheaderComponent } from './header/subheader/subheader.component';
+import { RouterModule } from "@angular/router";
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { SubheaderComponent } from './header/subheader/subheader.component';
     FooterComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    RouterModule
   ]
 })
 export class LayoutsModule { }
