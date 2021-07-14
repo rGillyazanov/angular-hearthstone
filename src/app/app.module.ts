@@ -3,10 +3,14 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgxsModule } from "@ngxs/store";
 import { NgxsReduxDevtoolsPluginModule } from "@ngxs/devtools-plugin";
 import { NgxsLoggerPluginModule } from "@ngxs/logger-plugin";
+import { NgxsStoragePluginModule } from "@ngxs/storage-plugin";
 import { HttpClientModule } from "@angular/common/http";
 import { ReactiveFormsModule } from "@angular/forms";
 import { LayoutsModule } from "./layouts/layouts.module";
 import { RouterModule } from "@angular/router";
+import { AuthModule } from "./auth/auth.module";
+
+import { AuthState } from "./auth/store/auth/auth.state";
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
@@ -25,9 +29,15 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
   imports: [
     BrowserModule,
     LayoutsModule,
+    AuthModule,
     HttpClientModule,
-    NgxsModule.forRoot([], {
+    NgxsModule.forRoot([
+      AuthState
+    ], {
       developmentMode: !environment.production
+    }),
+    NgxsStoragePluginModule.forRoot({
+      key: 'auth.access_token'
     }),
     NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxsLoggerPluginModule.forRoot(),

@@ -1,23 +1,40 @@
-<div class="router-progress-bar"
+<div class="router-progress-bar position-absolute top-0"
+     style="z-index: 3;"
      *ngIf="loaderSubject | async as _loader"
      [style.width]="_loader + '%'">
 </div>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Main navigation">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">{{ appConfig.name }}</a>
-    <button class="navbar-toggler p-0 border-0" type="button" id="navbarSideCollapse" aria-label="Переключить навигацию">
+    <a class="navbar-brand" [routerLink]="appConfig.routing.home">{{ appConfig.name }}</a>
+    <button class="navbar-toggler p-0 border-0" type="button" id="navbarSideCollapse"
+            aria-label="Переключить навигацию">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="navbar-collapse offcanvas-collapse justify-content-end" id="navbarsExampleDefault">
       <ul class="navbar-nav d-flex mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Войти</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Регистрация</a>
-        </li>
+        <ng-container *ngIf="!(isAuthenticated$ | async); else authMenu">
+          <li class="nav-item">
+            <a [routerLink]="appConfig.routing.login"
+               routerLinkActive="active"
+               class="nav-link"
+               aria-current="page">Войти</a>
+          </li>
+          <li class="nav-item">
+            <a [routerLink]="appConfig.routing.registration"
+               routerLinkActive="active"
+               class="nav-link"
+               aria-current="page">Регистрация</a>
+          </li>
+        </ng-container>
+        <ng-template #authMenu>
+          <li class="nav-item cursor-pointer"
+              (click)="logout()">
+            <a class="nav-link"
+               aria-current="page">Выйти</a>
+          </li>
+        </ng-template>
       </ul>
     </div>
   </div>

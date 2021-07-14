@@ -7,7 +7,10 @@ import {
   RouteConfigLoadEnd,
   RouteConfigLoadStart, Router
 } from "@angular/router";
-import { BehaviorSubject, Subscription } from "rxjs";
+import { BehaviorSubject, Observable, Subscription } from "rxjs";
+import { Select, Store } from "@ngxs/store";
+import { AuthState } from "../../auth/store/auth/auth.state";
+import { Logout } from "../../auth/store/auth/auth.actions";
 
 @Component({
   selector: 'app-header',
@@ -21,9 +24,29 @@ export class HeaderComponent implements OnInit, OnDestroy {
   routerLoaderTimout: any;
   routerSubscription: Subscription;
 
+  @Select(AuthState.isAuthenticated) isAuthenticated$: Observable<boolean> | undefined;
+
   constructor(@Inject('APP_CONFIG') public appConfig: AppConfigType,
+              private store: Store,
               private router: Router) {
-    this.routerSubscription = this.router.events.subscribe((event) => {
+    this.routerSubscription = this.routerProgressBar();
+  }
+
+  ngOnInit(): void {
+  }
+
+  ngOnDestroy() {
+    this.routerSubscription.unsubscribe();
+    if (this.routerLoaderTimout) {
+      clearTimeout(this.routerLoaderTimout);
+    }
+  }
+
+  /**
+   * Обрабатывает событие загрузки страницы при роутинге.
+   */
+  routerProgressBar(): Subscription {
+    return this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         this.loaderSubject.next(10);
       }
@@ -45,13 +68,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit(): void {
-  }
-
-  ngOnDestroy() {
-    this.routerSubscription.unsubscribe();
-    if (this.routerLoaderTimout) {
-      clearTimeout(this.routerLoaderTimout);
+  logout() {
+    if (this.isAuthenticated$) {
+      this.store.dispatch(new Logout());
     }
   }
 }

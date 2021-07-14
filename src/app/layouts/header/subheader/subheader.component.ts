@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { routerPaths } from "../../../app.router";
+import { Component, Inject, OnInit } from '@angular/core';
+import { AppConfigType } from "../../../../config/app.config";
 
 @Component({
   selector: 'app-subheader',
@@ -7,10 +7,7 @@ import { routerPaths } from "../../../app.router";
   styleUrls: ['./subheader.component.scss']
 })
 export class SubheaderComponent implements OnInit {
-  routerPaths;
-
-  constructor() {
-    this.routerPaths = routerPaths;
+  constructor(@Inject('APP_CONFIG') public appConfig: AppConfigType) {
   }
 
   ngOnInit(): void {

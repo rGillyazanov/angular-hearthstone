@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { HttpClient } from "@angular/common/http";
+import { Actions, ofActionDispatched } from "@ngxs/store";
+import { Logout } from "./auth/store/auth/auth.actions";
+import { Router } from "@angular/router";
+import { appConfig } from "../config/app.config";
 
 @Component({
   selector: 'app-root',
@@ -8,40 +12,14 @@ import { HttpClient } from "@angular/common/http";
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  form: FormGroup;
-
-  loginForm: FormGroup;
-
-  constructor(private http: HttpClient) {
-    this.form = new FormGroup({
-      name: new FormControl(''),
-      email: new FormControl(''),
-      password: new FormControl(''),
-      password_confirmation: new FormControl('')
-    });
-
-    this.loginForm = new FormGroup({
-      email: new FormControl('', Validators.email),
-      password: new FormControl('', Validators.required)
+  constructor(private http: HttpClient,
+              private actions: Actions,
+              private router: Router) {
+    this.actions.pipe(ofActionDispatched(Logout)).subscribe(() => {
+      this.router.navigate([appConfig.routing.login]);
     });
   }
 
   ngOnInit() {
-  }
-
-  registration() {
-    if (this.form.valid) {
-      this.http.post('/api/auth/registration', this.form.value).subscribe(response => {
-        console.log(response);
-      })
-    }
-  }
-
-  login() {
-    if (this.loginForm.valid) {
-      this.http.post('/api/auth/login', this.loginForm.value).subscribe(response => {
-        console.log(response);
-      })
-    }
   }
 }

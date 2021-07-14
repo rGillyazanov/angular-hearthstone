@@ -1,5 +1,10 @@
 export type AppConfigType = typeof appConfig;
 
 export const appConfig = Object.freeze({
-  name: 'Hearthstone'
+  name: 'Hearthstone',
+  routing: {
+    home: '',
+    login: 'login',
+    registration: 'register'
+  }
 });

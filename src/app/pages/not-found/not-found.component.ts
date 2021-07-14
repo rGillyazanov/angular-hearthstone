@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { routerPaths } from "../../app.router";
+import { Component, Inject, OnInit } from '@angular/core';
+import { AppConfigType } from "../../../config/app.config";
 
 @Component({
   selector: 'app-not-found',
@@ -7,10 +7,7 @@ import { routerPaths } from "../../app.router";
   styleUrls: ['./not-found.component.scss']
 })
 export class NotFoundComponent implements OnInit {
-  routerPaths;
-
-  constructor() {
-    this.routerPaths = routerPaths;
+  constructor(@Inject('APP_CONFIG') public appConfig: AppConfigType) {
     setTimeout(() => {}, 3000);
   }
 

@@ -1,0 +1,9 @@
+<form [formGroup]="loginForm" (submit)="login()">
+  <label for="inputEmail" class="sr-only">Email адрес</label>
+  <input formControlName="email" type="email" id="inputEmail" autocomplete="off" class="form-control" placeholder="Email адрес" required autofocus>
+  <label for="inputPassword" class="sr-only">Пароль</label>
+  <input formControlName="password" type="password" id="inputPassword" class="form-control" placeholder="Пароль" required>
+  <button class="button-submit btn-block" type="submit">Войти</button>
+
+  <div *ngIf="errorLogin.error">{{ errorLogin.message }}</div>
+</form>
