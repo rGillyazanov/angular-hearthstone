@@ -10,15 +10,15 @@ import { LayoutsModule } from "./layouts/layouts.module";
 import { RouterModule } from "@angular/router";
 import { AuthModule } from "./auth/auth.module";
 
-import { AuthState } from "./auth/store/auth/auth.state";
-
 import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 import { environment } from "../environments/environment";
 import { appConfig } from "../config/app.config";
 import { appRoutes } from "./app.router";
-import { NotFoundComponent } from './pages/not-found/not-found.component';
+
+import { CardsState } from "./store/cards/cards.state";
 
 @NgModule({
   declarations: [
@@ -32,7 +32,7 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
     AuthModule,
     HttpClientModule,
     NgxsModule.forRoot([
-      AuthState
+      CardsState
     ], {
       developmentMode: !environment.production
     }),

@@ -1,1 +1,9 @@
-<p>home works!</p>
+<div class="row d-flex flex-wrap-reverse">
+  <div class="col-lg-8 col-xs-12 d-flex flex-column">
+    <div class="row">
+      <div *ngFor="let card of allCards$ | async" class="col-xl-3 col-md-4 col-sm-6 col-xs-12 d-flex justify-content-center">
+        <img [src]="setCardImage(card.id_card)" height="300" [attr.alt]="card.name" class="card-scale image-card-rounded">
+      </div>
+    </div>
+  </div>
+</div>

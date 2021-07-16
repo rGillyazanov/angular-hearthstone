@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from "@angular/forms";
+import {
+  FormControl,
+  FormGroup,
+  Validators
+} from "@angular/forms";
 import { Store } from "@ngxs/store";
 import { Register } from "../store/auth/auth.actions";
 
@@ -21,11 +25,39 @@ export class RegistrationComponent implements OnInit {
 
   registerFormInit() {
     return new FormGroup({
-      name: new FormControl(''),
-      email: new FormControl(''),
-      password: new FormControl(''),
-      password_confirmation: new FormControl('')
-    });
+      name: new FormControl('', [
+        Validators.required,
+        Validators.max(255)
+      ]),
+      email: new FormControl('', [
+        Validators.required,
+        Validators.max(255),
+        Validators.email
+      ]),
+      password: new FormControl('', [
+        Validators.required,
+        Validators.min(8)
+      ]),
+      password_confirmation: new FormControl('', [
+        Validators.required,
+        Validators.min(8)
+      ])
+    }, this.confirmedValidator('password', 'password_confirmation'));
+  }
+
+  private confirmedValidator(controlName: string, matchingControlName: string): any {
+    return (formGroup: FormGroup) => {
+      const control = formGroup.controls[controlName];
+      const matchingControl = formGroup.controls[matchingControlName];
+      if (matchingControl.errors && !matchingControl.errors.confirmedValidator) {
+        return;
+      }
+      if (control.value !== matchingControl.value) {
+        matchingControl.setErrors({ confirmedValidator: true });
+      } else {
+        matchingControl.setErrors(null);
+      }
+    }
   }
 
   registration() {

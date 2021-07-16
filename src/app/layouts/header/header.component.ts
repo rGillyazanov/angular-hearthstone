@@ -9,8 +9,8 @@ import {
 } from "@angular/router";
 import { BehaviorSubject, Observable, Subscription } from "rxjs";
 import { Select, Store } from "@ngxs/store";
-import { AuthState } from "../../auth/store/auth/auth.state";
 import { Logout } from "../../auth/store/auth/auth.actions";
+import { AuthState } from "../../auth/store/auth/auth.state";
 
 @Component({
   selector: 'app-header',

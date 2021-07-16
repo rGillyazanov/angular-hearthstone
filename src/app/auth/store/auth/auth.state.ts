@@ -3,7 +3,7 @@ import { AuthStateModel, IUser } from "./auth-state.model";
 import { tap } from "rxjs/operators";
 import { Login, Logout, Register } from "./auth.actions";
 import { Injectable } from "@angular/core";
-import { AuthService } from "../../../shared/services/auth.service";
+import { AuthService } from "../../../shared/services/auth/auth.service";
 
 @State<AuthStateModel>({
   name: 'auth',
