@@ -7,4 +7,14 @@
       [perPage]="24"
     ></app-cards>
   </div>
+  <div class="col-lg-4 col-xs-12">
+    <ng-select [items]="heroes$ | async"
+               bindLabel="name"
+               autofocus
+               bindValue="id"
+               [(ngModel)]="filters.heroes">
+    </ng-select>
+
+    {{ filters.heroes }}
+  </div>
 </div>

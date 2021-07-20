@@ -5,7 +5,7 @@ import { NgxsReduxDevtoolsPluginModule } from "@ngxs/devtools-plugin";
 import { NgxsLoggerPluginModule } from "@ngxs/logger-plugin";
 import { NgxsStoragePluginModule } from "@ngxs/storage-plugin";
 import { HttpClientModule } from "@angular/common/http";
-import { ReactiveFormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { LayoutsModule } from "./layouts/layouts.module";
 import { RouterModule } from "@angular/router";
 import { AuthModule } from "./auth/auth.module";
@@ -22,6 +22,8 @@ import { appConfig } from "../config/app.config";
 import { appRoutes } from "./app.router";
 
 import { CardsState } from "./store/cards/cards.state";
+import { NgSelectModule } from "@ng-select/ng-select";
+import { HeroesState } from "./store/heroes/heroes.state";
 
 @NgModule({
   declarations: [
@@ -36,7 +38,8 @@ import { CardsState } from "./store/cards/cards.state";
     AuthModule,
     HttpClientModule,
     NgxsModule.forRoot([
-      CardsState
+      CardsState,
+      HeroesState
     ], {
       developmentMode: !environment.production
     }),
@@ -47,7 +50,9 @@ import { CardsState } from "./store/cards/cards.state";
     NgxsLoggerPluginModule.forRoot(),
     ReactiveFormsModule,
     RouterModule.forRoot(appRoutes),
-    NgxPaginationModule
+    NgxPaginationModule,
+    NgSelectModule,
+    FormsModule
   ],
   providers: [
     {
