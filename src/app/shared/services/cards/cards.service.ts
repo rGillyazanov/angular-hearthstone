@@ -21,8 +21,8 @@ export class CardsService {
     );
   }
 
-  getCardsOfPage(url: string): Observable<CardsStateModel> {
-    return this.http.get<CardsStateModel>(url).pipe(
+  getCardsOfPage(page: number): Observable<CardsStateModel> {
+    return this.http.get<CardsStateModel>('/api/cards?page=' + page).pipe(
       map(response => response.data as any)
     );
   }

@@ -9,10 +9,13 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { LayoutsModule } from "./layouts/layouts.module";
 import { RouterModule } from "@angular/router";
 import { AuthModule } from "./auth/auth.module";
+import { NgxPaginationModule } from "ngx-pagination";
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
+
+import { CardsComponent } from './pages/home/cards/cards.component';
 
 import { environment } from "../environments/environment";
 import { appConfig } from "../config/app.config";
@@ -24,7 +27,8 @@ import { CardsState } from "./store/cards/cards.state";
   declarations: [
     AppComponent,
     HomeComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    CardsComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +46,8 @@ import { CardsState } from "./store/cards/cards.state";
     NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxsLoggerPluginModule.forRoot(),
     ReactiveFormsModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    NgxPaginationModule
   ],
   providers: [
     {

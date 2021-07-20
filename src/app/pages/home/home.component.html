@@ -1,18 +1,10 @@
 <div class="row d-flex">
   <div class="col-lg-8 col-xs-12 d-flex flex-column">
-    <div class="row">
-      <div *ngFor="let card of allCards$ | async" class="col-xl-3 col-md-4 col-sm-6 col-xs-12 d-flex justify-content-center">
-        <img [src]="setCardImage(card.id_card)" height="300" [attr.alt]="card.name" class="card-scale image-card-rounded">
-      </div>
-    </div>
+    <app-cards
+      [cards]="allCards$ | async"
+      [totalCards]="total$ | async"
+      [currentPage]="currentPage$ | async"
+      [perPage]="24"
+    ></app-cards>
   </div>
-
-  <ng-container *ngIf="(allCards$ | async)?.length">
-    <button type="button"  class="btn btn-success"
-            *ngIf="(prevPageUrl$ | async) as prevUrl"
-            (click)="changePage(prevUrl)">Previous</button>
-    <button type="button" class="btn btn-success"
-            *ngIf="(nextPageUrl$ | async) as nextUrl"
-            (click)="changePage(nextUrl)">Next</button>
-  </ng-container>
 </div>

@@ -37,6 +37,16 @@ export class CardsState {
     return state.prev_page_url;
   }
 
+  @Selector()
+  static total(state: CardsStateModel): number {
+    return state.total;
+  }
+
+  @Selector()
+  static currentPage(state: CardsStateModel): number {
+    return state.current_page;
+  }
+
   constructor(private cardsService: CardsService) {}
 
   @Action(GetAllCards)
@@ -64,7 +74,7 @@ export class CardsState {
   @Action(ChangePage)
   getCardsOfNextPage(ctx: StateContext<CardsStateModel>, action: ChangePage) {
     const state = ctx.getState();
-    return this.cardsService.getCardsOfPage(action.payload.url).pipe(
+    return this.cardsService.getCardsOfPage(action.payload.page).pipe(
       tap((result) => {
         ctx.patchState({
           ...state,

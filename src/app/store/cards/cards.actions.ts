@@ -5,6 +5,6 @@ export class GetAllCards {
 export class ChangePage {
   static readonly type = '[Cards] Get cards of other page';
 
-  constructor(public payload: { url: string }) {
+  constructor(public payload: { page: number }) {
   }
 }

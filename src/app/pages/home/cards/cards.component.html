@@ -1,0 +1,18 @@
+<ng-container *ngIf="cards">
+  <div class="row">
+    <div *ngFor="let card of cards | paginate: { id: 'server',
+                                                    itemsPerPage: perPage,
+                                                    currentPage: currentPage,
+                                                    totalItems: totalCards }"
+         class="col-xl-3 col-md-4 col-sm-6 col-xs-12 d-flex justify-content-center">
+      <img [src]="setCardImage(card.id_card)" height="300" [attr.alt]="card.name" class="card-scale image-card-rounded">
+    </div>
+
+    <div class="text-center">
+      <pagination-controls (pageChange)="getPage($event)"
+                           previousLabel="Назад"
+                           nextLabel="Следующая"
+                           id="server"></pagination-controls>
+    </div>
+  </div>
+</ng-container>
