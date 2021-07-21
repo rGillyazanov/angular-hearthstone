@@ -2,7 +2,8 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { IAllCards } from "../../../store/cards/cards-state.model";
 import { CardsService } from "../../../shared/services/cards/cards.service";
 import { Store } from "@ngxs/store";
-import { ChangePage } from "../../../store/cards/cards.actions";
+import { GetCardsOfPage } from "../../../store/cards/cards.actions";
+import { IFiltersCards } from "../../../shared/models/filters-types";
 
 @Component({
   selector: 'app-cards',
@@ -16,6 +17,8 @@ export class CardsComponent implements OnInit {
   @Input() perPage: any;
   @Input() currentPage: any;
 
+  @Input() filteredParameters: IFiltersCards;
+
   constructor(private store: Store) { }
 
   ngOnInit(): void {
@@ -26,6 +29,10 @@ export class CardsComponent implements OnInit {
   }
 
   getPage(page: number) {
-    this.store.dispatch(new ChangePage({ page: page }))
+    console.log(page);
+    this.store.dispatch(new GetCardsOfPage({
+      page: page,
+      filteredParameters: this.filteredParameters
+    }))
   }
 }

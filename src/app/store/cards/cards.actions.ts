@@ -1,13 +1,9 @@
 import { IFiltersCards } from "../../shared/models/filters-types";
 
-export class GetAllCards {
-  static readonly type = '[Cards] Get all cards';
-}
-
-export class ChangePage {
+export class GetCardsOfPage {
   static readonly type = '[Cards] Get cards of other page';
 
-  constructor(public payload: { page: number }) {
+  constructor(public payload: { page: number, filteredParameters?: IFiltersCards }) {
   }
 }
 
