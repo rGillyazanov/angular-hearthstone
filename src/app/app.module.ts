@@ -10,6 +10,7 @@ import { LayoutsModule } from "./layouts/layouts.module";
 import { RouterModule } from "@angular/router";
 import { AuthModule } from "./auth/auth.module";
 import { NgxPaginationModule } from "ngx-pagination";
+import { NgSelectModule } from "@ng-select/ng-select";
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
@@ -21,9 +22,7 @@ import { environment } from "../environments/environment";
 import { appConfig } from "../config/app.config";
 import { appRoutes } from "./app.router";
 
-import { CardsState } from "./store/cards/cards.state";
-import { NgSelectModule } from "@ng-select/ng-select";
-import { HeroesState } from "./store/heroes/heroes.state";
+import { storeAppModule } from "./store/index.store";
 
 @NgModule({
   declarations: [
@@ -37,10 +36,7 @@ import { HeroesState } from "./store/heroes/heroes.state";
     LayoutsModule,
     AuthModule,
     HttpClientModule,
-    NgxsModule.forRoot([
-      CardsState,
-      HeroesState
-    ], {
+    NgxsModule.forRoot(storeAppModule, {
       developmentMode: !environment.production
     }),
     NgxsStoragePluginModule.forRoot({

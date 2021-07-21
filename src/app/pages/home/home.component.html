@@ -8,13 +8,40 @@
     ></app-cards>
   </div>
   <div class="col-lg-4 col-xs-12">
+    Heroes
     <ng-select [items]="heroes$ | async"
                bindLabel="name"
-               autofocus
+               placeholder="Выберите героя"
                bindValue="id"
                [(ngModel)]="filters.heroes">
     </ng-select>
-
-    {{ filters.heroes }}
+    Races
+    <ng-select [items]="races$ | async"
+               bindLabel="name"
+               placeholder="Выберите расу"
+               bindValue="id"
+               [(ngModel)]="filters.race">
+    </ng-select>
+    Rarities
+    <ng-select [items]="rarities$ | async"
+               bindLabel="name"
+               placeholder="Выберите редкость"
+               bindValue="id"
+               [(ngModel)]="filters.rarity">
+    </ng-select>
+    Types
+    <ng-select [items]="types$ | async"
+               bindLabel="name"
+               placeholder="Выберите тип"
+               bindValue="id"
+               [(ngModel)]="filters.type">
+    </ng-select>
+    Mechanics
+    <ng-select [items]="mechanics$ | async"
+               bindLabel="name"
+               placeholder="Выберите механику"
+               bindValue="id"
+               [(ngModel)]="filters.mechanic">
+    </ng-select>
   </div>
 </div>

@@ -1,4 +1,4 @@
-import { Hero } from "../../shared/models/heroes/hero";
+import { Hero } from "../../shared/models/filters-types";
 
 export interface HeroesStateModel {
   heroes: Hero[];

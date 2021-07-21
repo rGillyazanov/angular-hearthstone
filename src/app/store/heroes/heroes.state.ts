@@ -4,7 +4,7 @@ import { Injectable } from "@angular/core";
 import { GetAllHeroes } from "./heroes.actions";
 import { HeroesService } from "../../shared/services/heroes/heroes.service";
 import { HeroesStateModel } from "./heroes-state.model";
-import { Hero } from "../../shared/models/heroes/hero";
+import { Hero } from "../../shared/models/filters-types";
 
 @State<HeroesStateModel>({
   name: 'heroes',
@@ -22,7 +22,7 @@ export class HeroesState {
   constructor(private heroesService: HeroesService) {}
 
   @Action(GetAllHeroes)
-  getAllCards(ctx: StateContext<HeroesStateModel>) {
+  getAllHeroes(ctx: StateContext<HeroesStateModel>) {
     const state = ctx.getState();
     return this.heroesService.getHeroesList().pipe(
       tap((result) => {
