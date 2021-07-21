@@ -7,7 +7,7 @@ import { HeroesState } from "../../store/heroes/heroes.state";
 import { RaceState } from "../../store/race/race.state";
 import { RarityState } from "../../store/rarity/rarity.state";
 
-import { Hero, Mechanic, Race, Rarity, Type } from "../../shared/models/filters-types";
+import { Hero, IFiltersCards, Mechanic, Race, Rarity, Type } from "../../shared/models/filters-types";
 import { IAllCards } from "../../store/cards/cards-state.model";
 
 import { GetAllHeroes } from "../../store/heroes/heroes.actions";
@@ -17,6 +17,7 @@ import { GetAllTypes } from "../../store/type/type.actions";
 import { TypeState } from "../../store/type/type.state";
 import { MechanicState } from "../../store/mechanic/mechanic.state";
 import { GetAllMechanics } from "../../store/mechanic/mechanic.actions";
+import { FiltersCards } from "../../store/cards/cards.actions";
 
 @Component({
   selector: 'app-home',
@@ -35,14 +36,7 @@ export class HomeComponent implements OnInit {
   @Select(TypeState.types) types$: Observable<Type[]>;
   @Select(MechanicState.mechanics) mechanics$: Observable<Mechanic[]>;
 
-  filters: {
-    heroes: number | null,
-    race: number | null,
-    packSet: number | null,
-    rarity: number | null,
-    type: number | null,
-    mechanic: number | null
-  }
+  filters: IFiltersCards;
 
   constructor(private store: Store) {
     this.filters = {
@@ -63,5 +57,9 @@ export class HomeComponent implements OnInit {
       new GetAllTypes(),
       new GetAllMechanics()
     ]);
+  }
+
+  filteredCards() {
+    this.store.dispatch(new FiltersCards(this.filters));
   }
 }

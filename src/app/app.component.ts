@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Actions, ofActionDispatched } from "@ngxs/store";
 import { Logout } from "./auth/store/auth/auth.actions";
@@ -9,7 +8,8 @@ import { appConfig } from "../config/app.config";
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements OnInit {
   constructor(private http: HttpClient,

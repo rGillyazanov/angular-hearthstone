@@ -2,7 +2,7 @@ import { Action, Selector, State, StateContext } from "@ngxs/store";
 import { tap } from "rxjs/operators";
 import { Injectable } from "@angular/core";
 import { CardsStateModel, IAllCards } from "./cards-state.model";
-import { ChangePage, GetAllCards } from "./cards.actions";
+import { ChangePage, FiltersCards, GetAllCards } from "./cards.actions";
 import { CardsService } from "../../shared/services/cards/cards.service";
 
 @State<CardsStateModel>({
@@ -75,6 +75,28 @@ export class CardsState {
   getCardsOfNextPage(ctx: StateContext<CardsStateModel>, action: ChangePage) {
     const state = ctx.getState();
     return this.cardsService.getCardsOfPage(action.payload.page).pipe(
+      tap((result) => {
+        ctx.patchState({
+          ...state,
+          current_page: result.current_page,
+          data: result.data,
+          from: result.from,
+          last_page: result.last_page,
+          next_page_url: result.next_page_url,
+          path: result.path,
+          per_page: result.per_page,
+          prev_page_url: result.prev_page_url,
+          to: result.to,
+          total: result.total
+        });
+      })
+    );
+  }
+
+  @Action(FiltersCards)
+  getFilteredCards(ctx: StateContext<CardsStateModel>, action: FiltersCards) {
+    const state = ctx.getState();
+    return this.cardsService.getFilteredOfCards(action.payload).pipe(
       tap((result) => {
         ctx.patchState({
           ...state,
