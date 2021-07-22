@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { IAllCards } from "../../../store/cards/cards-state.model";
 import { CardsService } from "../../../shared/services/cards/cards.service";
-import { Store } from "@ngxs/store";
+import { Select, Store } from "@ngxs/store";
 import { GetCardsOfPage } from "../../../store/cards/cards.actions";
-import { IFiltersCards } from "../../../shared/models/filters-types";
+import { CardsFilterStateModel } from "../../../store/cards-filter/cards-filter-state.model";
+import { CardsFilterState } from "../../../store/cards-filter/cards-filter.state";
 
 @Component({
   selector: 'app-cards',
@@ -17,7 +18,7 @@ export class CardsComponent implements OnInit {
   @Input() perPage: any;
   @Input() currentPage: any;
 
-  @Input() filteredParameters: IFiltersCards;
+  @Select(CardsFilterState) cardsFilter: CardsFilterStateModel;
 
   constructor(private store: Store) { }
 
@@ -31,7 +32,7 @@ export class CardsComponent implements OnInit {
   getPage(page: number) {
     this.store.dispatch(new GetCardsOfPage({
       page: page,
-      filteredParameters: this.filteredParameters
+      filteredParameters: this.cardsFilter
     }))
   }
 }

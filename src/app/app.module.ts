@@ -16,20 +16,22 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 
-import { CardsComponent } from './pages/home/cards/cards.component';
+import { CardsComponent } from './pages/components/cards/cards.component';
 
 import { environment } from "../environments/environment";
 import { appConfig } from "../config/app.config";
 import { appRoutes } from "./app.router";
 
 import { storeAppModule } from "./store/index.store";
+import { CardsFilterComponent } from './pages/components/cards-filter/cards-filter.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     NotFoundComponent,
-    CardsComponent
+    CardsComponent,
+    CardsFilterComponent
   ],
   imports: [
     BrowserModule,

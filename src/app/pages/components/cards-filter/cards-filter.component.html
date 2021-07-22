@@ -1,0 +1,92 @@
+<div class="filters">
+  <label for="heroes">Герой</label>
+  <ng-select [items]="heroes$ | async"
+             (change)="changeHero($event?.id)"
+             id="heroes"
+             bindLabel="name"
+             placeholder="Выберите героя"
+             bindValue="id">
+  </ng-select>
+  <label for="races">Раса</label>
+  <ng-select [items]="races$ | async"
+             (change)="changeRace($event?.id)"
+             id="races"
+             bindLabel="name"
+             placeholder="Выберите расу"
+             bindValue="id">
+  </ng-select>
+  <label for="rarity">Редкость</label>
+  <ng-select [items]="rarities$ | async"
+             (change)="changeRarity($event?.id)"
+             id="rarity"
+             bindLabel="name"
+             placeholder="Выберите редкость"
+             bindValue="id">
+  </ng-select>
+  <label for="rarity">Тип</label>
+  <ng-select [items]="types$ | async"
+             (change)="changeType($event?.id)"
+             id="type"
+             bindLabel="name"
+             placeholder="Выберите тип"
+             bindValue="id">
+  </ng-select>
+  <label for="mechanic">Механика</label>
+  <ng-select [items]="mechanics$ | async"
+             (change)="changeMechanic($event?.id)"
+             id="mechanic"
+             bindLabel="name"
+             placeholder="Выберите механику"
+             bindValue="id">
+  </ng-select>
+  <label for="sort">Сортировка</label>
+  <ng-select [items]="sortOptions$ | async"
+             (change)="changeSort($event?.field)"
+             id="sort"
+             bindLabel="label"
+             placeholder="Выберите механику"
+             bindValue="field">
+  </ng-select>
+
+  <div class="filters-property-cards">
+    <div class="form-check form-switch">
+      <input class="form-check-input" type="checkbox" id="cost" (change)="switchCostFilter($event)">
+      <label class="form-check-label" for="cost">Включить фильтр по мане</label>
+    </div>
+
+    <ng-container *ngIf="costActive$ | async">
+      <label for="cost-range" class="form-label">
+        Мана ({{ valueOfPropertyCard(cost$ | async) }})
+      </label>
+      <input type="range" class="form-range" min="0" max="10" value="5" id="cost-range" (input)="changeCost($event)">
+    </ng-container>
+
+    <div class="form-check form-switch">
+      <input class="form-check-input" type="checkbox" id="attack" (change)="switchAttackFilter($event)">
+      <label class="form-check-label" for="attack">Включить фильтр по атаке</label>
+    </div>
+
+    <ng-container *ngIf="attackActive$ | async">
+      <label for="attack-range" class="form-label">
+        Атака ({{ valueOfPropertyCard(attack$ | async) }})
+      </label>
+      <input type="range" class="form-range" min="0" max="10" value="5" id="attack-range" (input)="changeAttack($event)">
+    </ng-container>
+
+    <div class="form-check form-switch">
+      <input class="form-check-input" type="checkbox" id="health" (change)="switchHealthFilter($event)">
+      <label class="form-check-label" for="health">Включить фильтр по здоровью</label>
+    </div>
+
+    <ng-container *ngIf="healthActive$ | async">
+      <label for="health-range" class="form-label">
+        Здоровье ({{ valueOfPropertyCard(health$ | async) }})
+      </label>
+      <input type="range" class="form-range" min="0" max="10" value="5" id="health-range" (input)="changeHealth($event)">
+    </ng-container>
+  </div>
+
+  <div class="d-grid gap-2 mt-4">
+    <button class="btn btn-primary" type="button" (click)="filteredCards()">Найти</button>
+  </div>
+</div>

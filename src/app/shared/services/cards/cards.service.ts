@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { CardsStateModel } from "../../../store/cards/cards-state.model";
+import { CardsFilterStateModel } from "../../../store/cards-filter/cards-filter-state.model";
 import { map } from "rxjs/operators";
-import { IFiltersCards } from "../../models/filters-types";
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,7 @@ export class CardsService {
     return `https://art.hearthstonejson.com/v1/render/latest/ruRU/256x/${ idCard }.png`;
   }
 
-  private static setFilteredParameters(parameters: IFiltersCards | undefined) {
+  private static setFilteredParameters(parameters: CardsFilterStateModel | undefined) {
     const filteredParameters: { [x: string]: string; } = {};
 
     if (parameters === undefined) return filteredParameters;
@@ -56,7 +56,7 @@ export class CardsService {
     return filteredParameters;
   }
 
-  getCards(page?: number, parameters?: IFiltersCards): Observable<CardsStateModel> {
+  getCards(page?: number, parameters?: CardsFilterStateModel): Observable<CardsStateModel> {
     if (parameters) {
       return this.getFilteredOfCards(parameters, page);
     }
@@ -74,7 +74,7 @@ export class CardsService {
     );
   }
 
-  getFilteredOfCards(parameters: IFiltersCards, page?: number): Observable<CardsStateModel> {
+  getFilteredOfCards(parameters: CardsFilterStateModel, page?: number): Observable<CardsStateModel> {
     let params = new HttpParams().appendAll(CardsService.setFilteredParameters(parameters));
 
     if (page) {
