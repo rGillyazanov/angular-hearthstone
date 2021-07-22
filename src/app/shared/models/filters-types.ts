@@ -9,7 +9,23 @@ export interface IFiltersCards {
   packSet: number | null,
   rarity: number | null,
   type: number | null,
-  mechanic: number | null
+  mechanic: number | null,
+  cost: {
+    on: boolean,
+    value: number
+  },
+  attack: {
+    on: boolean,
+    value: number
+  },
+  health: {
+    on: boolean,
+    value: number
+  },
+  sortBy: {
+    value: null,
+    options: Array<{ label: string; field: { type: string; name: string; } }>
+  }
 }
 
 export type Race = Partial<BaseNameType>;

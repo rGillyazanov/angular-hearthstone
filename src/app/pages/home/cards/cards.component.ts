@@ -29,7 +29,6 @@ export class CardsComponent implements OnInit {
   }
 
   getPage(page: number) {
-    console.log(page);
     this.store.dispatch(new GetCardsOfPage({
       page: page,
       filteredParameters: this.filteredParameters

@@ -40,6 +40,18 @@ export class CardsService {
     if (parameters.mechanic) {
       filteredParameters['mechanics'] = parameters.mechanic.toString();
     }
+    if (parameters.cost.on) {
+      filteredParameters['cost'] = parameters.cost.value.toString();
+    }
+    if (parameters.attack.on) {
+      filteredParameters['attack'] = parameters.attack.value.toString();
+    }
+    if (parameters.health.on) {
+      filteredParameters['health'] = parameters.health.value.toString();
+    }
+    if (parameters.sortBy.value) {
+      filteredParameters['sort'] = JSON.stringify(parameters.sortBy.value);
+    }
 
     return filteredParameters;
   }

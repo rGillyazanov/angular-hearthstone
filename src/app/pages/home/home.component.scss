@@ -1,9 +1,17 @@
 .filters {
-  label {
+  & > label {
     margin-top: 5px;
   }
 
   ng-select {
     margin-top: 5px;
+  }
+
+  .filters-property-cards {
+    margin-top: 10px;
+
+    .form-switch {
+      margin-bottom: 5px;
+    }
   }
 }

@@ -49,6 +49,52 @@
                bindValue="id"
                [(ngModel)]="filters.mechanic">
     </ng-select>
+    <label for="sort">Сортировка</label>
+    <ng-select [items]="filters.sortBy.options"
+               id="sort"
+               bindLabel="label"
+               placeholder="Выберите механику"
+               bindValue="field"
+               [(ngModel)]="filters.sortBy.value">
+    </ng-select>
+
+    <div class="filters-property-cards">
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="cost" [(ngModel)]="filters.cost.on">
+        <label class="form-check-label" for="cost">Включить фильтр по мане</label>
+      </div>
+
+      <ng-container *ngIf="filters.cost.on">
+        <label for="cost-range" class="form-label">
+          Мана ({{ valueOfPropertyCard(filters.cost.value) }})
+        </label>
+        <input type="range" class="form-range" min="0" max="10" id="cost-range" [(ngModel)]="filters.cost.value">
+      </ng-container>
+
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="attack" [(ngModel)]="filters.attack.on">
+        <label class="form-check-label" for="attack">Включить фильтр по атаке</label>
+      </div>
+
+      <ng-container *ngIf="filters.attack.on">
+        <label for="attack-range" class="form-label">
+          Атака ({{ valueOfPropertyCard(filters.attack.value) }})
+        </label>
+        <input type="range" class="form-range" min="0" max="10" id="attack-range" [(ngModel)]="filters.attack.value">
+      </ng-container>
+
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="health" [(ngModel)]="filters.health.on">
+        <label class="form-check-label" for="health">Включить фильтр по здоровью</label>
+      </div>
+
+      <ng-container *ngIf="filters.health.on">
+        <label for="health-range" class="form-label">
+          Здоровье ({{ valueOfPropertyCard(filters.health.value) }})
+        </label>
+        <input type="range" class="form-range" min="0" max="10" id="health-range" [(ngModel)]="filters.health.value">
+      </ng-container>
+    </div>
 
     <div class="d-grid gap-2 mt-4">
       <button class="btn btn-primary" type="button" (click)="filteredCards()">Найти</button>

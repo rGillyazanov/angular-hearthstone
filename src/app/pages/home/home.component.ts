@@ -45,7 +45,66 @@ export class HomeComponent implements OnInit {
       packSet: null,
       rarity: null,
       type: null,
-      mechanic: null
+      mechanic: null,
+      cost: {
+        on: false,
+        value: 0
+      },
+      attack: {
+        on: false,
+        value: 0
+      },
+      health: {
+        on: false,
+        value: 0
+      },
+      sortBy: {
+        value: null,
+        options: [
+          {
+            label: 'Атаке: по возрастанию',
+            field: {
+              type: 'asc',
+              name: 'attack'
+            }
+          },
+          {
+            label: 'Атака: по убыванию',
+            field: {
+              type: 'desc',
+              name: 'attack'
+            }
+          },
+          {
+            label: 'Здоровье: по возрастанию',
+            field: {
+              type: 'asc',
+              name: 'health'
+            }
+          },
+          {
+            label: 'Здоровье: по убыванию',
+            field: {
+              type: 'desc',
+              name: 'health'
+            }
+          },
+          {
+            label: 'Мана: по возрастанию',
+            field: {
+              type: 'asc',
+              name: 'cost'
+            }
+          },
+          {
+            label: 'Мана: по убыванию',
+            field: {
+              type: 'desc',
+              name: 'cost'
+            }
+          }
+        ]
+      }
     };
   }
 
@@ -61,5 +120,9 @@ export class HomeComponent implements OnInit {
 
   filteredCards() {
     this.store.dispatch(new FiltersCards(this.filters));
+  }
+
+  valueOfPropertyCard(value: number) {
+    return value >= 10 ? `${value}+` : value;
   }
 }
