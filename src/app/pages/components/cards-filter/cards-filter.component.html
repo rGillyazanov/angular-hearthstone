@@ -31,6 +31,14 @@
              placeholder="Выберите тип"
              bindValue="id">
   </ng-select>
+  <label for="packSets">Набор</label>
+  <ng-select [items]="packSets$ | async"
+             (change)="changePackSet($event?.id)"
+             id="packSets"
+             bindLabel="name"
+             placeholder="Выберите набор"
+             bindValue="id">
+  </ng-select>
   <label for="mechanic">Механика</label>
   <ng-select [items]="mechanics$ | async"
              (change)="changeMechanic($event?.id)"
@@ -44,7 +52,7 @@
              (change)="changeSort($event?.field)"
              id="sort"
              bindLabel="label"
-             placeholder="Выберите механику"
+             placeholder="Выберите тип сортировки"
              bindValue="field">
   </ng-select>
 

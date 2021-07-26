@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Hero, Mechanic, Race, Rarity, Type } from "../../../shared/models/filters-types";
+import { Hero, Mechanic, PackSet, Race, Rarity, Type } from "../../../shared/models/filters-types";
 import { Observable } from "rxjs";
 import { Select, Store } from "@ngxs/store";
 
@@ -7,13 +7,18 @@ import { GetAllRaces } from "../../../store/race/race.actions";
 import { GetAllHeroes } from "../../../store/heroes/heroes.actions";
 import { GetAllRarities } from "../../../store/rarity/rarity.actions";
 import { GetAllTypes } from "../../../store/type/type.actions";
+import { GetAllPackSets } from "../../../store/packSet/packSet.actions";
 import { GetAllMechanics } from "../../../store/mechanic/mechanic.actions";
+import { FiltersCards } from "../../../store/cards/cards.actions";
+
 import { HeroesState } from "../../../store/heroes/heroes.state";
 import { RaceState } from "../../../store/race/race.state";
 import { RarityState } from "../../../store/rarity/rarity.state";
 import { TypeState } from "../../../store/type/type.state";
 import { MechanicState } from "../../../store/mechanic/mechanic.state";
 import { CardsFilterState } from "../../../store/cards-filter/cards-filter.state";
+import { PackSetState } from "../../../store/packSet/packSet.state";
+
 import {
   SetAttack,
   SetAttackActive,
@@ -22,13 +27,13 @@ import {
   SetHealth,
   SetHealthActive,
   SetHero,
-  SetMechanic,
+  SetMechanic, SetPackSet,
   SetRace,
   SetRarity,
   SetSort,
   SetType
 } from "../../../store/cards-filter/cards-filter.actions";
-import { FiltersCards } from "../../../store/cards/cards.actions";
+
 import { CardsFilterStateModel } from "../../../store/cards-filter/cards-filter-state.model";
 
 @Component({
@@ -44,6 +49,7 @@ export class CardsFilterComponent implements OnInit {
   @Select(RaceState.races) races$: Observable<Race[]>;
   @Select(RarityState.rarity) rarities$: Observable<Rarity[]>;
   @Select(TypeState.types) types$: Observable<Type[]>;
+  @Select(PackSetState.packSets) packSets$: Observable<PackSet[]>;
   @Select(MechanicState.mechanics) mechanics$: Observable<Mechanic[]>;
 
   // Filters cards
@@ -68,6 +74,7 @@ export class CardsFilterComponent implements OnInit {
       new GetAllHeroes(),
       new GetAllRarities(),
       new GetAllTypes(),
+      new GetAllPackSets(),
       new GetAllMechanics()
     ]);
   }
@@ -98,6 +105,10 @@ export class CardsFilterComponent implements OnInit {
 
   changeType(type: number | null) {
     this.store.dispatch(new SetType(type));
+  }
+
+  changePackSet(packSet: number | null) {
+    this.store.dispatch(new SetPackSet(packSet));
   }
 
   changeMechanic(mechanic: number | null) {
