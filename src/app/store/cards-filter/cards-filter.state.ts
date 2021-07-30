@@ -18,6 +18,7 @@ import { GetAllRarities } from "../rarity/rarity.actions";
 import { GetAllTypes } from "../type/type.actions";
 import { GetAllPackSets } from "../packSet/packSet.actions";
 import { GetAllMechanics } from "../mechanic/mechanic.actions";
+import { BehaviorSubject } from "rxjs";
 
 @State<CardsFilterStateModel>({
   name: 'cardsFilter',

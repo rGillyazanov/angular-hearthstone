@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import { CardsStateModel } from "../../../store/cards/cards-state.model";
 import { CardsFilterStateModel } from "../../../store/cards-filter/cards-filter-state.model";
 import { map } from "rxjs/operators";
@@ -9,6 +9,7 @@ import { map } from "rxjs/operators";
   providedIn: 'root'
 })
 export class CardsService {
+  currentFiltersOfCards = new Subject<CardsFilterStateModel>();
 
   constructor(private http: HttpClient) {
   }
@@ -40,16 +41,16 @@ export class CardsService {
     if (parameters.mechanic) {
       filteredParameters['mechanics'] = parameters.mechanic.toString();
     }
-    if (parameters.cost.on) {
+    if (parameters.cost?.on) {
       filteredParameters['cost'] = parameters.cost.value.toString();
     }
-    if (parameters.attack.on) {
+    if (parameters.attack?.on) {
       filteredParameters['attack'] = parameters.attack.value.toString();
     }
-    if (parameters.health.on) {
+    if (parameters.health?.on) {
       filteredParameters['health'] = parameters.health.value.toString();
     }
-    if (parameters.sortBy.value) {
+    if (parameters.sortBy?.value) {
       filteredParameters['sort'] = JSON.stringify(parameters.sortBy.value);
     }
 
@@ -75,6 +76,8 @@ export class CardsService {
   }
 
   getFilteredOfCards(parameters: CardsFilterStateModel, page?: number): Observable<CardsStateModel> {
+    this.currentFiltersOfCards.next(parameters);
+
     let params = new HttpParams().appendAll(CardsService.setFilteredParameters(parameters));
 
     if (page) {
