@@ -7,6 +7,14 @@ export class GetCardsOfPage {
   }
 }
 
+export class CardsLoading {
+  static readonly type = '[Cards] Cards loading...';
+}
+
+export class CardsLoaded {
+  static readonly type = '[Cards] Cards loaded';
+}
+
 export class FiltersCards {
   static readonly type = '[Filters] Filters cards';
 

@@ -3,12 +3,6 @@ import { Hero, Mechanic, PackSet, Race, Rarity, Type } from "../../../shared/mod
 import { Observable } from "rxjs";
 import { Select, Store } from "@ngxs/store";
 
-import { GetAllRaces } from "../../../store/race/race.actions";
-import { GetAllHeroes } from "../../../store/heroes/heroes.actions";
-import { GetAllRarities } from "../../../store/rarity/rarity.actions";
-import { GetAllTypes } from "../../../store/type/type.actions";
-import { GetAllPackSets } from "../../../store/packSet/packSet.actions";
-import { GetAllMechanics } from "../../../store/mechanic/mechanic.actions";
 import { FiltersCards } from "../../../store/cards/cards.actions";
 
 import { HeroesState } from "../../../store/heroes/heroes.state";
@@ -65,18 +59,6 @@ export class CardsFilterComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.initData();
-  }
-
-  initData() {
-    this.store.dispatch([
-      new GetAllRaces(),
-      new GetAllHeroes(),
-      new GetAllRarities(),
-      new GetAllTypes(),
-      new GetAllPackSets(),
-      new GetAllMechanics()
-    ]);
   }
 
   filteredCards() {

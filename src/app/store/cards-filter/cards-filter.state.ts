@@ -1,4 +1,4 @@
-import { Action, Selector, State, StateContext } from "@ngxs/store";
+import { Action, NgxsOnInit, Selector, State, StateContext } from "@ngxs/store";
 import { Injectable } from "@angular/core";
 import { CardsFilterStateModel } from "./cards-filter-state.model";
 
@@ -12,6 +12,12 @@ import {
   SetRarity, SetSort,
   SetType
 } from "./cards-filter.actions";
+import { GetAllRaces } from "../race/race.actions";
+import { GetAllHeroes } from "../heroes/heroes.actions";
+import { GetAllRarities } from "../rarity/rarity.actions";
+import { GetAllTypes } from "../type/type.actions";
+import { GetAllPackSets } from "../packSet/packSet.actions";
+import { GetAllMechanics } from "../mechanic/mechanic.actions";
 
 @State<CardsFilterStateModel>({
   name: 'cardsFilter',
@@ -84,7 +90,7 @@ import {
   }
 })
 @Injectable()
-export class CardsFilterState {
+export class CardsFilterState implements NgxsOnInit {
   @Selector()
   static heroes(state: CardsFilterStateModel): number | null {
     return state.heroes;
@@ -156,6 +162,17 @@ export class CardsFilterState {
   }
 
   constructor() {
+  }
+
+  ngxsOnInit(ctx?: StateContext<CardsFilterStateModel>) {
+    ctx?.dispatch([
+      new GetAllRaces(),
+      new GetAllHeroes(),
+      new GetAllRarities(),
+      new GetAllTypes(),
+      new GetAllPackSets(),
+      new GetAllMechanics()
+    ]);
   }
 
   @Action(SetHero)

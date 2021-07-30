@@ -1,8 +1,8 @@
-import { Action, Selector, State, StateContext } from "@ngxs/store";
-import { tap } from "rxjs/operators";
+import { Action, NgxsOnInit, Selector, State, StateContext } from "@ngxs/store";
+import { finalize, tap } from "rxjs/operators";
 import { Injectable } from "@angular/core";
 import { CardsStateModel, IAllCards } from "./cards-state.model";
-import { GetCardsOfPage, FiltersCards } from "./cards.actions";
+import { GetCardsOfPage, FiltersCards, CardsLoading, CardsLoaded } from "./cards.actions";
 import { CardsService } from "../../shared/services/cards/cards.service";
 
 @State<CardsStateModel>({
@@ -17,11 +17,13 @@ import { CardsService } from "../../shared/services/cards/cards.service";
     per_page: 0,
     prev_page_url: '',
     to: 0,
-    total: 0
+    total: 0,
+    loading: false,
+    loaded: false
   }
 })
 @Injectable()
-export class CardsState {
+export class CardsState implements NgxsOnInit {
   @Selector()
   static data(state: CardsStateModel): IAllCards[] {
     return state.data;
@@ -47,11 +49,31 @@ export class CardsState {
     return state.current_page;
   }
 
-  constructor(private cardsService: CardsService) {}
+  @Selector()
+  static loading(state: CardsStateModel): boolean {
+    return state.loading;
+  }
+
+  @Selector()
+  static loaded(state: CardsStateModel): boolean {
+    return state.loaded;
+  }
+
+  constructor(private cardsService: CardsService) {
+  }
+
+  ngxsOnInit(ctx?: StateContext<CardsStateModel>) {
+    ctx?.dispatch(new GetCardsOfPage({
+      page: 1
+    }));
+  }
 
   @Action(GetCardsOfPage)
   getCardsOfPage(ctx: StateContext<CardsStateModel>, action: GetCardsOfPage) {
     const state = ctx.getState();
+
+    ctx.dispatch(new CardsLoading());
+
     return this.cardsService.getCards(action.payload.page, action.payload.filteredParameters).pipe(
       tap((result) => {
         ctx.patchState({
@@ -65,8 +87,11 @@ export class CardsState {
           per_page: result.per_page,
           prev_page_url: result.prev_page_url,
           to: result.to,
-          total: result.total
+          total: result.total,
         });
+      }),
+      finalize(() => {
+        ctx.dispatch(new CardsLoaded());
       })
     );
   }
@@ -74,6 +99,9 @@ export class CardsState {
   @Action(FiltersCards)
   getFilteredCards(ctx: StateContext<CardsStateModel>, action: FiltersCards) {
     const state = ctx.getState();
+
+    ctx.dispatch(new CardsLoading());
+
     return this.cardsService.getFilteredOfCards(action.payload).pipe(
       tap((result) => {
         ctx.patchState({
@@ -89,7 +117,30 @@ export class CardsState {
           to: result.to,
           total: result.total
         });
+      }),
+      finalize(() => {
+        ctx.dispatch(new CardsLoaded());
       })
     );
+  }
+
+  @Action(CardsLoading)
+  setCardsLoading({ getState, patchState }: StateContext<CardsStateModel>) {
+    const state = getState();
+    patchState({
+      ...state,
+      loaded: false,
+      loading: true
+    });
+  }
+
+  @Action(CardsLoaded)
+  setCardsLoaded({ getState, patchState }: StateContext<CardsStateModel>) {
+    const state = getState();
+    patchState({
+      ...state,
+      loaded: true,
+      loading: false
+    });
   }
 }

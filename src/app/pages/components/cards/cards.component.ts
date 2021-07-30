@@ -5,6 +5,8 @@ import { Select, Store } from "@ngxs/store";
 import { GetCardsOfPage } from "../../../store/cards/cards.actions";
 import { CardsFilterStateModel } from "../../../store/cards-filter/cards-filter-state.model";
 import { CardsFilterState } from "../../../store/cards-filter/cards-filter.state";
+import { CardsState } from "../../../store/cards/cards.state";
+import { Observable } from "rxjs";
 
 @Component({
   selector: 'app-cards',
@@ -19,6 +21,8 @@ export class CardsComponent implements OnInit {
   @Input() currentPage: any;
 
   @Select(CardsFilterState) cardsFilter: CardsFilterStateModel;
+  @Select(CardsState.loading) loadingCards$: Observable<boolean>;
+  @Select(CardsState.loaded) loadedCards$: Observable<boolean>;
 
   constructor(private store: Store) { }
 

@@ -8,12 +8,12 @@ import { CardsFilterState } from "./cards-filter/cards-filter.state";
 import { PackSetState } from "./packSet/packSet.state";
 
 export const storeAppModule = [
-  CardsState,
   HeroesState,
   RaceState,
   RarityState,
   TypeState,
   PackSetState,
   MechanicState,
-  CardsFilterState
+  CardsFilterState,
+  CardsState
 ];
