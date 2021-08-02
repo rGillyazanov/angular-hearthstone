@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Hero, Mechanic, PackSet, Race, Rarity, Type } from "../../../shared/models/filters-types";
-import { Observable } from "rxjs";
-import { Select, Store } from "@ngxs/store";
+import { Observable, Subject } from "rxjs";
+import { Actions, ofActionSuccessful, Select, Store } from "@ngxs/store";
 
 import { FiltersCards } from "../../../store/cards/cards.actions";
 
@@ -28,7 +28,8 @@ import {
   SetType
 } from "../../../store/cards-filter/cards-filter.actions";
 
-import { CardsFilterStateModel } from "../../../store/cards-filter/cards-filter-state.model";
+import { CardsService } from "../../../shared/services/cards/cards.service";
+import { takeUntil } from "rxjs/operators";
 
 @Component({
   selector: 'app-cards-filter',
@@ -36,7 +37,8 @@ import { CardsFilterStateModel } from "../../../store/cards-filter/cards-filter-
   styleUrls: ['./cards-filter.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CardsFilterComponent implements OnInit {
+export class CardsFilterComponent implements OnInit, OnDestroy {
+  destroy$: Subject<boolean> = new Subject<boolean>();
 
   // Filters select options
   @Select(HeroesState.heroes) heroes$: Observable<Hero[]>;
@@ -55,16 +57,29 @@ export class CardsFilterComponent implements OnInit {
   @Select(CardsFilterState.cost) cost$: Observable<number>;
   @Select(CardsFilterState.health) health$: Observable<number>;
 
-  constructor(private store: Store) {
+  constructor(private store: Store,
+              private actions: Actions,
+              private cardsService: CardsService) {
   }
 
   ngOnInit(): void {
+    this.actions.pipe(
+      ofActionSuccessful(FiltersCards),
+      takeUntil(this.destroy$)
+    ).subscribe(() => {
+      const filterState = this.store.selectSnapshot(CardsFilterState);
+      this.cardsService.currentFiltersOfCards.next(filterState);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 
   filteredCards() {
-    this.store.select<CardsFilterStateModel>(CardsFilterState).subscribe(filterState => {
-      this.store.dispatch(new FiltersCards(filterState))
-    }).unsubscribe();
+    const filterState = this.store.selectSnapshot(CardsFilterState);
+    this.store.dispatch(new FiltersCards(filterState));
   }
 
   valueOfPropertyCard(value: number | null) {

@@ -76,8 +76,6 @@ export class CardsService {
   }
 
   getFilteredOfCards(parameters: CardsFilterStateModel, page?: number): Observable<CardsStateModel> {
-    this.currentFiltersOfCards.next(parameters);
-
     let params = new HttpParams().appendAll(CardsService.setFilteredParameters(parameters));
 
     if (page) {
