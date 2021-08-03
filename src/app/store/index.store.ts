@@ -6,6 +6,7 @@ import { TypeState } from "./type/type.state";
 import { MechanicState } from "./mechanic/mechanic.state";
 import { CardsFilterState } from "./cards-filter/cards-filter.state";
 import { PackSetState } from "./packSet/packSet.state";
+import { CardState } from "./card/card.state";
 
 export const storeAppModule = [
   HeroesState,
@@ -15,5 +16,6 @@ export const storeAppModule = [
   PackSetState,
   MechanicState,
   CardsFilterState,
-  CardsState
+  CardsState,
+  CardState
 ];

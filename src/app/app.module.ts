@@ -11,31 +11,28 @@ import { RouterModule } from "@angular/router";
 import { AuthModule } from "./auth/auth.module";
 import { NgxPaginationModule } from "ngx-pagination";
 import { NgSelectModule } from "@ng-select/ng-select";
+import { CardsModule } from "./cards/cards.module";
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
-
-import { CardsComponent } from './pages/components/cards/cards.component';
 
 import { environment } from "../environments/environment";
 import { appConfig } from "../config/app.config";
 import { appRoutes } from "./app.router";
 
 import { storeAppModule } from "./store/index.store";
-import { CardsFilterComponent } from './pages/components/cards-filter/cards-filter.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    NotFoundComponent,
-    CardsComponent,
-    CardsFilterComponent
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
     LayoutsModule,
+    CardsModule,
     AuthModule,
     HttpClientModule,
     NgxsModule.forRoot(storeAppModule, {
@@ -48,8 +45,6 @@ import { CardsFilterComponent } from './pages/components/cards-filter/cards-filt
     NgxsLoggerPluginModule.forRoot(),
     ReactiveFormsModule,
     RouterModule.forRoot(appRoutes),
-    NgxPaginationModule,
-    NgSelectModule,
     FormsModule
   ],
   providers: [

@@ -1,0 +1,89 @@
+<div class="col-12 d-flex justify-content-center align-items-center" style="height: calc(100vh - 55px)"
+     *ngIf="loadingCard$ | async">
+  <div class="spinner-border" role="status">
+  </div>
+</div>
+<div class="col-10 offset-1" *ngIf="loadedCard$ | async">
+  <div class="row" *ngIf="(card$ | async) as card">
+    <div class="col-lg-4 col-xs-12">
+      <div class="d-flex flex-column justify-content-center">
+        <img [src]="setCardImage(card.id_card)" height="387" width="256" [attr.alt]="card.name" class="mx-auto img-fluid">
+        <div class="d-flex justify-content-center position-relative font-weight-regular" style="bottom: 25px">
+                                <span data-toggle="tooltip"
+                                      data-placement="bottom"
+                                      title="Художник"
+                                >
+                                    {{ card.artist }}
+                                </span>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-8 col-xs-12 d-flex flex-column mt-lg-5 pb-3">
+      <blockquote class="blockquote">
+        <p [innerText]="cardTagReplace(card.flavor)"></p>
+        <footer class="blockquote-footer">{{ card.name }}</footer>
+      </blockquote>
+      <p [innerHTML]="cardTagReplace(card.text)" class="font-weight-regular"></p>
+      <div class="font-weight-regular mt-2" *ngIf="card.health || card.attack || card.cost || card.rarity.id !== 5">
+        <h5>Характеристики</h5>
+        <div *ngIf="card.health !== null" class="d-flex align-items-center">
+          <img src="assets/images/icons/Health.png" alt="Здоровье"><span class="ms-2">{{ card.health }}</span>
+        </div>
+        <div *ngIf="card.attack !== null" class="d-flex align-items-center">
+          <img src="assets/images/icons/Attack.png" alt="Атака"><span class="ms-2">{{ card.attack }}</span>
+        </div>
+        <div *ngIf="card.cost !== null" class="d-flex align-items-center">
+          <img src="assets/images/icons/Mana.png" alt="Мана"><span class="ms-2">{{ card.cost }}</span>
+        </div>
+        <div *ngIf="card.rarity.id !== 5" class="d-flex align-items-center">
+          <img style="margin-left: 2px" src="assets/images/icons/dust.png" alt="Мана"
+               data-toggle="tooltip"
+               data-placement="bottom"
+               title="Стоимость создания карты"
+          >
+          <span class="ms-2">{{ costOfCard.common }} / {{ costOfCard.gold }} (Золотая)</span>
+        </div>
+      </div>
+      <div>
+        <h5 class="mt-3">Параметры</h5>
+        <div class="card-parameters d-flex flex-column">
+          <div *ngIf="card.heroes.length !== 0; else hasHero">
+            Класс:
+            <span class="ms-2">{{ heroesList(card.heroes) }}</span>
+          </div>
+          <ng-template #hasHero>
+            <div *ngIf="card.hero">
+              Класс: <span class="ms-2">{{ card.hero.name }}</span>
+            </div>
+            <div *ngIf="card.type">Тип: <span class="ms-2">{{ card.type.name }}</span></div>
+            <div *ngIf="card.race">Раса: <span class="ms-2">{{ card.race.name }}</span></div>
+            <div *ngIf="card.rarity">Качество: <span class="ms-2">{{ card.rarity.name }}</span></div>
+            <div *ngIf="card.packset">Набор: <span class="ms-2">{{ card.packset.name }}</span></div>
+          </ng-template>
+        </div>
+        <ng-template [ngIf]="card.mechanics.length !== 0">
+          <h5 class="mt-3">Механики</h5>
+          <div class="d-flex flex-column">
+            <div *ngFor="let mechanic of card.mechanics">
+                                    <span data-toggle="tooltip"
+                                          data-placement="bottom">
+                                        {{ mechanic.name }}
+                                    </span>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template [ngIf]="card.tags.length !== 0">
+          <h5 class="mt-3">Дополнительные механики</h5>
+          <div class="d-flex flex-column">
+            <div *ngFor="let tag of card.tags">
+                                    <span data-toggle="tooltip"
+                                          data-placement="bottom">
+                                        {{ tag.name }}
+                                    </span>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

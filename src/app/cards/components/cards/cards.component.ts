@@ -6,6 +6,7 @@ import { GetCardsOfPage } from "../../../store/cards/cards.actions";
 import { CardsState } from "../../../store/cards/cards.state";
 import { Observable } from "rxjs";
 import { CardsFilterStateModel } from "../../../store/cards-filter/cards-filter-state.model";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-cards',
@@ -24,6 +25,7 @@ export class CardsComponent implements OnInit {
   @Select(CardsState.loaded) loadedCards$: Observable<boolean>;
 
   constructor(private store: Store,
+              private router: Router,
               private cardsService: CardsService) { }
 
   ngOnInit(): void {

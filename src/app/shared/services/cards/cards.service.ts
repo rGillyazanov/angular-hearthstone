@@ -88,4 +88,41 @@ export class CardsService {
       map(response => response.data as any)
     );
   }
+
+  getCard(id: number): Observable<any> {
+    return this.http.get<any>('/api/card/' + id).pipe(
+      map(response => response.data as any)
+    )
+  }
+
+  static cardTagReplace(text: string): string {
+    return text?.replace("#", "").replace("$", "").replace("[x]", "");
+  }
+
+  static getCostOfCard(rarityId: number | undefined) {
+    let costCommon, costGold = 0;
+    switch (rarityId) {
+      case 1:
+        costCommon = 50;
+        costGold = costCommon * 8;
+        break;
+      case 2:
+        costCommon = 100;
+        costGold = costCommon * 8;
+        break;
+      case 3:
+        costCommon = 400;
+        costGold = costCommon * 4;
+        break;
+      case 4:
+        costCommon = 1600;
+        costGold = costCommon * 2;
+        break;
+    }
+
+    return {
+      common: costCommon,
+      gold: costGold
+    };
+  }
 }

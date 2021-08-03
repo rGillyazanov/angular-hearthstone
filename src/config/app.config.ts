@@ -5,6 +5,7 @@ export const appConfig = Object.freeze({
   routing: {
     home: '',
     login: 'login',
-    registration: 'register'
+    registration: 'register',
+    card: 'card'
   }
 });
