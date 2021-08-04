@@ -7,6 +7,8 @@ import { CardState } from "../../../store/card/card.state";
 import { CardsService } from "../../../shared/services/cards/cards.service";
 import { ICard } from "../../../store/card/card-state.model";
 
+import { BootstrapService } from "../../../shared/services/bootstrap.service";
+
 @Component({
   selector: 'app-card',
   templateUrl: './card.component.html',
@@ -32,7 +34,9 @@ export class CardComponent implements OnInit {
     });
 
     this.card$.subscribe(card => {
-      this.costOfCard = CardsService.getCostOfCard(card?.rarity?.id)
+      this.costOfCard = CardsService.getCostOfCard(card?.rarity?.id);
+
+      BootstrapService.initTooltip();
     });
   }
 

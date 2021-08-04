@@ -2,5 +2,9 @@
   cursor: pointer;
 }
 
+.font-weight-regular {
+  font-weight: 500;
+}
+
 @import "ngx-paginate";
 @import "~@ng-select/ng-select/themes/default.theme.css";
