@@ -4,6 +4,7 @@ import { Observable, Subject } from "rxjs";
 import { CardsStateModel } from "../../../store/cards/cards-state.model";
 import { CardsFilterStateModel } from "../../../store/cards-filter/cards-filter-state.model";
 import { map } from "rxjs/operators";
+import { ICostCard } from "../../../store/card/card-state.model";
 
 @Injectable({
   providedIn: 'root'
@@ -99,8 +100,8 @@ export class CardsService {
     return text?.replace("#", "").replace("$", "").replace("[x]", "");
   }
 
-  static getCostOfCard(rarityId: number | undefined) {
-    let costCommon, costGold = 0;
+  static getCostOfCard(rarityId: number | undefined): ICostCard {
+    let costCommon = 0, costGold = 0;
     switch (rarityId) {
       case 1:
         costCommon = 50;

@@ -4,5 +4,8 @@
 html {
   font-family: 'Roboto', sans-serif;
 }
+
+@import "assets/scss/variables-config";
+@import "assets/scss/layouts";
 @import "assets/scss/custom";
 @import "~bootstrap/scss/bootstrap";

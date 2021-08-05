@@ -1,0 +1,21 @@
+html, body {
+  height: 100%;
+}
+
+app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+main {
+  flex: 1 0 auto;
+  background-color: $body-background-color;
+}
+
+#footer {
+  flex: 0 0 auto;
+  height: $height-footer;
+  background-color: $footer-background-color;
+  border-top: 1px solid #cdcdcd;
+}

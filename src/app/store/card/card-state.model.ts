@@ -1,11 +1,16 @@
 import { Hero, Mechanic, PackSet, Race, Rarity, Type } from "../../shared/models/filters-types";
 
+export interface ICostCard {
+  common: number,
+  gold: number
+}
+
 export interface ICard {
   armor: number | null,
   artist: string,
   attack: number | null,
   collectible: number,
-  cost: number | { common: number | undefined, gold: number } | null,
+  cost: number | ICostCard | null,
   dbfId: number,
   durability: boolean | null,
   flavor: string,
