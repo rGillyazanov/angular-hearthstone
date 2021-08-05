@@ -4,6 +4,9 @@ import { NotFoundComponent } from "./pages/not-found/not-found.component";
 import { appConfig } from "../config/app.config";
 
 export const appRoutes: Routes = [
-  { path: appConfig.routing.home, component: HomeComponent, pathMatch: 'full'},
+  {
+    path: appConfig.routing.home, component: HomeComponent, pathMatch: 'full',
+    loadChildren: () => import('./cards/cards.module').then(m => m.CardsModule)
+  },
   { path: '**', component: NotFoundComponent },
 ];
