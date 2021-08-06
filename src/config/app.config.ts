@@ -6,6 +6,8 @@ export const appConfig = Object.freeze({
     home: '',
     login: 'login',
     registration: 'register',
-    card: 'card'
+    card: 'card',
+    deckBuilder: 'build',
+    deck: 'deck'
   }
 });

@@ -1,0 +1,18 @@
+<div class="col-lg-12 col-12 mx-auto mb-5">
+  <div class="row d-flex justify-content-center flex-wrap heroes">
+    <ng-container *ngFor="let hero of heroes">
+      <div class="col-md-3 col-sm-12 position-relative">
+        <div class="position-absolute font-weight-regular text-center text-border text-white"
+             style="bottom: 100px; font-size: 1.3rem">
+          {{ hero.name }}
+        </div>
+        <a [routerLink]="['', hero.id]">
+          <img (mouseover)="overHeroImg($event)"
+               (mouseout)="outHeroImg($event)"
+               class="img-fluid" [src]="'./assets/images/heroes/' + hero.name?.toLowerCase() + '_static.png'"
+               [attr.alt]="hero.name">
+        </a>
+      </div>
+    </ng-container>
+  </div>
+</div>

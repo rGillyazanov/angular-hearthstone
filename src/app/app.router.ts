@@ -8,5 +8,9 @@ export const appRoutes: Routes = [
     path: appConfig.routing.home, component: HomeComponent, pathMatch: 'full',
     loadChildren: () => import('./cards/cards.module').then(m => m.CardsModule)
   },
+  {
+    path: appConfig.routing.deck,
+    loadChildren: () => import('./deck/deck.module').then(m => m.DeckModule)
+  },
   { path: '**', component: NotFoundComponent },
 ];
