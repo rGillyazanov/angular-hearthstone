@@ -21,12 +21,14 @@ export class ShowHeroesComponent implements OnInit, DoCheck {
   }
 
   overHeroImg($event: MouseEvent) {
-    const src = ($event.target as HTMLImageElement).src;
-    ($event.target as HTMLImageElement).setAttribute('src', src.replace('static', 'hover'));
+    const el = ($event.target as HTMLImageElement);
+    const src = el.src;
+    el.setAttribute('src', src.replace('static', 'hover'));
   }
 
   outHeroImg($event: MouseEvent) {
-    const src = ($event.target as HTMLImageElement).src;
-    ($event.target as HTMLImageElement).setAttribute('src', src.replace('hover', 'static'));
+    const el = ($event.target as HTMLImageElement);
+    const src = el.src;
+    el.setAttribute('src', src.replace('hover', 'static'));
   }
 }

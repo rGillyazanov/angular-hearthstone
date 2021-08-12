@@ -1,0 +1,110 @@
+<app-list-of-cards-in-deck
+  *ngIf="cardsLoaded$ | async"
+  [cards]="cards$ | async"
+></app-list-of-cards-in-deck>
+<div class="col-lg-3 col-md-12 pb-4 deck__block"
+     *ngIf="(cardsLoaded$ | async) && (heroLoaded$ | async)">
+  <div class="position-sticky mt-5" style="top: 20px;">
+    <div class="d-flex flex-column text-center">
+      <div class="d-flex justify-content-center align-items-center">
+        <ng-container *ngIf="hero$ | async as hero">
+          <img [src]="'assets/images/heroesIcons/' + hero.name?.toLowerCase() + '.png'" height="40" width="40"
+               class="heroIcon" [attr.alt]="hero.name">
+          <div class="ml-3 h5 mb-0 text-border text-white">hero.name</div>
+        </ng-container>
+      </div>
+      <span class="h4 mt-3 mb-0 font-weight-bold text-border text-white">countCardsInDeck / 30</span>
+      <div class="d-flex justify-content-center align-items-center" style="cursor: pointer"
+           data-toggle="tooltip"
+           data-placement="bottom" title="Нажмите, чтобы сменить формат колоды">
+          <ng-container *ngIf="deck.Format === 2">
+            <div class="formatImage">
+                <img class="position-relative" style="top: 15px; width: 30px"
+                     src="assets/images/formatDeck/standard.png" alt="Стандартный">
+            </div>
+            <span class="ml-1 text-border font-weight-regular text-white"
+                  style="font-size: 1.1rem">Стандартная колода</span>
+          </ng-container>
+          <ng-container *ngIf="deck.Format === 1">
+            <div class="formatImage">
+              <img class="position-relative" style="top: 15px; width: 30px"
+                   src="assets/images/formatDeck/wild.png" alt="Вольный">
+            </div>
+            <span class="ml-1 text-border font-weight-regular text-white"
+                  style="font-size: 1.1rem">Вольная колода</span>
+          </ng-container>
+      </div>
+    </div>
+    <div class="mt-5 text-center">
+      <span class="h6">Выберите карты, чтобы добавить их в колоду.</span>
+    </div>
+    <div class="cards-container overflow-auto px-2" style="height: 500px">
+      <div *ngFor="let card of deck.Cards; let i = index">
+        <div
+             class="card-tile"
+             [attr.aria-label]="card.name"
+             style="height: 34px; line-height: 34px; cursor: pointer"
+        >
+          <div class="card-gem"
+               style="width: 34px;"
+          >
+            <span class="card-cost" style="font-size: 1.25em;">card.cost</span>
+          </div>
+          <!--<div class="card-frame">
+            <img class="card-asset" [ngClass]="{'count-one': card.count !== 2, 'count-two': card.count === 2}"
+                 [src]="'https://art.hearthstonejson.com/v1/tiles/'+ card.id_card + '.png'" [attr.alt]="card.name">
+            <div class="card-countbox" style="width: 24px;" *ngIf="card.count === 2 || card.rarity.id === 4">
+              <span class="card-count" style="font-size: 1.15em; top: -2px;" *ngIf="card.rarity.id === 4">★</span>
+              <span class="card-count" style="font-size: 1.15em; top: -2px;"
+                    *ngIf="card.count === 2">{{ card.count }}</span>
+            </div>
+            <span class="card-fade-countbox"></span>
+            <figcaption class="card-name"
+                        style="font-size: 0.9em; width: calc(100% - 28px);">{{ card.name }}</figcaption>
+          </div>-->
+        </div>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-12 d-inline-flex justify-content-center align-items-center"
+           data-toggle="tooltip"
+           data-placement="bottom"
+           title="Стоимость создания колоды">
+        <img src="assets/images/icons/dust.png" alt="Стоимость колоды" height="18">
+        <span class="ml-2 font-weight-regular">deckCost</span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 d-flex justify-content-center">
+        <button type="button" class="btn btn-danger mt-3" data-toggle="modal"
+                data-target="#exampleModal">
+          Код колоды
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Код колоды</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input class="form-control" type="text" readonly>
+          <div class="badge badge-success mt-3">Код колоды скопирован</div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success">Скопировать код колоды</button>
+          <button class="btn btn-primary" data-dismiss="modal">
+            Отобразить колоду
+          </button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Закрыть</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

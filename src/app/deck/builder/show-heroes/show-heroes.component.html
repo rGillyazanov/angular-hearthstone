@@ -6,7 +6,7 @@
              style="bottom: 100px; font-size: 1.3rem">
           {{ hero.name }}
         </div>
-        <a [routerLink]="['', hero.id]">
+        <a [routerLink]="['/deck/hero', hero.id]">
           <img (mouseover)="overHeroImg($event)"
                (mouseout)="outHeroImg($event)"
                class="img-fluid" [src]="'./assets/images/heroes/' + hero.name?.toLowerCase() + '_static.png'"

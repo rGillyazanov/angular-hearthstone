@@ -7,7 +7,7 @@ export const appConfig = Object.freeze({
     login: 'login',
     registration: 'register',
     card: 'card',
-    deckBuilder: 'build',
+    deckBuilder: 'create',
     deck: 'deck'
   }
 });

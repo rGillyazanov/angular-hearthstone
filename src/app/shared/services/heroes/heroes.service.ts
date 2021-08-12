@@ -17,4 +17,10 @@ export class HeroesService {
       map(response => (response.data as Hero[]))
     );
   }
+
+  getHero(id: number): Observable<Hero> {
+    return this.http.get<IResponseServer>('/api/heroes/' + id).pipe(
+      map(response => (response.data as Hero))
+    );
+  }
 }
