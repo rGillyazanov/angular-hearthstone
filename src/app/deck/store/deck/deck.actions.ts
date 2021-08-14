@@ -1,3 +1,6 @@
+import { Hero } from "../../../shared/models/filters-types";
+import { ICardInDeck } from "./deck-state.model";
+
 export class GetCardsOfHero {
   static readonly type = '[Deck] Get cards of hero';
 
@@ -26,4 +29,32 @@ export class HeroOfDeckLoading {
 
 export class HeroOfDeckLoaded {
   static readonly type = '[Deck] Hero of deck loaded';
+}
+
+export class SetHeroInDeck {
+  static readonly type = '[Deck] Set hero in deck';
+
+  constructor(public hero: Hero) {
+  }
+}
+
+export class ChangeFormatOfDeck {
+  static readonly type = '[Deck] Format of deck changed';
+
+  constructor(public format: 1 | 2) {
+  }
+}
+
+export class AddCardInDeck {
+  static readonly type = '[Deck] Add card in deck';
+
+  constructor(public card: ICardInDeck) {
+  }
+}
+
+export class RemoveCardFromDeck {
+  static readonly type = '[Deck] Remove card from deck';
+
+  constructor(public dbfId: number) {
+  }
 }

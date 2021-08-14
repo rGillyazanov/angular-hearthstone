@@ -2,13 +2,12 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/
 import { ActivatedRoute } from "@angular/router";
 import { Observable, Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
-import { Hero } from "../../shared/models/filters-types";
-import { ICard } from "../../store/card/card-state.model";
+
 import { Select, Store } from "@ngxs/store";
 import { DeckState } from "../store/deck/deck.state";
-import { Deck } from "../models/deck";
 import { GetCardsOfHero, GetHeroOfDeck } from "../store/deck/deck.actions";
-import { ICardInDeck } from "../store/deck/deck-state.model";
+import { Deck, ICardInDeck } from "../store/deck/deck-state.model";
+import { DeckService } from "../services/deck.service";
 
 @Component({
   selector: 'app-cards-of-deck',
@@ -19,28 +18,27 @@ import { ICardInDeck } from "../store/deck/deck-state.model";
 export class CardsOfDeckComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<boolean>();
 
-  heroId: number;
-  deck: Deck;
-
   @Select(DeckState.cards) cards$: Observable<ICardInDeck[]>;
   @Select(DeckState.cardsOfHeroLoading) cardsLoading$: Observable<boolean>;
   @Select(DeckState.cardsOfHeroLoaded) cardsLoaded$: Observable<boolean>;
 
-  @Select(DeckState.hero) hero$: Observable<Hero>;
   @Select(DeckState.heroOfDeckLoading) heroLoading$: Observable<boolean>;
   @Select(DeckState.heroOfDeckLoaded) heroLoaded$: Observable<boolean>;
 
-  constructor(private router: ActivatedRoute,
+  @Select(DeckState.deck) deck$: Observable<Deck>;
+
+  constructor(private deckService: DeckService,
+              private router: ActivatedRoute,
               private store: Store) {
-    this.router.params.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(params => {
-      this.heroId = params['id'];
-      this.getHero(this.heroId);
-    });
   }
 
   ngOnInit(): void {
+    this.router.params.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(params => {
+      const heroId = params['id'];
+      this.getHero(heroId);
+    });
   }
 
   ngOnDestroy(): void {
@@ -49,15 +47,20 @@ export class CardsOfDeckComponent implements OnInit, OnDestroy {
   }
 
   getHero(id: number) {
-    this.store.dispatch(new GetHeroOfDeck(id)).pipe(
+    this.store.dispatch([
+      new GetHeroOfDeck(id),
+      new GetCardsOfHero(id)
+    ]).pipe(
       takeUntil(this.destroy$)
-    ).subscribe(hero => {
-      console.log(hero);
-      this.deck = new Deck(hero);
+    );
+  }
 
-      this.store.dispatch(new GetCardsOfHero(id));
-      console.log(this.deck);
-    });
+  countOfCardInDeck(card: ICardInDeck): number {
+    return this.deckService.countOfCardsInDeck(card);
+  }
+
+  countOfDeck(): number {
+    return this.deckService.costOfDeck();
   }
 
 }

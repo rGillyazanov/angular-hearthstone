@@ -1,8 +1,18 @@
-<div *ngFor="let card of cards">
-  <img [attr.data-dbfId]="card.dbfId"
-       [attr.data-rarityId]="card.rarity.id"
-       [attr.data-cost]="card.cost"
-       [attr.data-idcard]="card.id_card"
-       [attr.data-name]="card.name"
-       [src]="setImageCard(card.id_card)" height="300" [attr.alt]="card.name" class="card-scale cursor-pointer img-fluid image-card-rounded">
+<div class="row">
+  <div *ngFor="let card of cards"
+       class="col-lg-3 col-md-4 col-sm-6 col-xs-12"
+  >
+    <img
+      (click)="addCardInDeck(card)"
+      [attr.data-dbfId]="card.dbfId"
+      [attr.data-rarityId]="card.rarity.id"
+      [attr.data-cost]="card.cost"
+      [attr.data-idcard]="card.id_card"
+      [attr.data-name]="card.name"
+      [src]="setImageCard(card.id_card)"
+      height="300"
+      [attr.alt]="card.name"
+      class="card-scale cursor-pointer img-fluid image-card-rounded">
+  </div>
 </div>
+

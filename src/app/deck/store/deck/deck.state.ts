@@ -1,13 +1,14 @@
-import { Action, Selector, State, StateContext } from "@ngxs/store";
+import { Action, Selector, State, StateContext, Store } from "@ngxs/store";
 import { finalize, tap } from "rxjs/operators";
 import { Injectable } from "@angular/core";
-import { DeckStateModel, ICardInDeck } from "./deck-state.model";
-import { IAllCards } from "../../../store/cards/cards-state.model";
-import { Hero } from "../../../shared/models/filters-types";
+
+import { Deck, DeckStateModel, ICardInDeck } from "./deck-state.model";
+
 import {
+  AddCardInDeck,
   CardsOfHeroLoaded,
   CardsOfHeroLoading,
-  GetCardsOfHero, GetHeroOfDeck, HeroOfDeckLoaded, HeroOfDeckLoading
+  GetCardsOfHero, GetHeroOfDeck, HeroOfDeckLoaded, HeroOfDeckLoading, SetHeroInDeck
 } from "./deck.actions";
 
 import { DeckService } from "../../services/deck.service";
@@ -16,7 +17,11 @@ import { HeroesService } from "../../../shared/services/heroes/heroes.service";
 @State<DeckStateModel>({
   name: 'deck',
   defaults: {
-    hero: {} as Hero,
+    deck: {
+      cards: [],
+      format: 1,
+      hero: {}
+    },
     cards: [],
     totalOfCards: 0,
     cardsOfHeroLoading: false,
@@ -28,8 +33,8 @@ import { HeroesService } from "../../../shared/services/heroes/heroes.service";
 @Injectable()
 export class DeckState {
   @Selector()
-  static hero(state: DeckStateModel): Hero {
-    return state.hero;
+  static deck(state: DeckStateModel): Deck {
+    return state.deck;
   }
 
   @Selector()
@@ -57,21 +62,18 @@ export class DeckState {
     return state.heroOfDeckLoaded;
   }
 
-  constructor(private deckService: DeckService,
+  constructor(private store: Store,
+              private deckService: DeckService,
               private heroesService: HeroesService) {
   }
 
   @Action(GetHeroOfDeck)
   getHeroOfDeck(ctx: StateContext<DeckStateModel>, action: GetHeroOfDeck) {
-    const state = ctx.getState();
-
     ctx.dispatch(new HeroOfDeckLoading());
 
     return this.heroesService.getHero(action.heroId).pipe(
       tap((hero) => {
-        return ctx.patchState({
-          hero: hero
-        });
+        ctx.dispatch(new SetHeroInDeck(hero))
       }),
       finalize(() => {
         ctx.dispatch(new HeroOfDeckLoaded());
@@ -81,13 +83,11 @@ export class DeckState {
 
   @Action(GetCardsOfHero)
   getCardsOfHero(ctx: StateContext<DeckStateModel>, action: GetCardsOfHero) {
-    const state = ctx.getState();
-
     ctx.dispatch(new CardsOfHeroLoading());
 
     return this.deckService.getCardsOfHero(action.heroId).pipe(
       tap((cardsOfHero) => {
-        return ctx.patchState({
+        ctx.patchState({
           totalOfCards: cardsOfHero.total,
           cards: cardsOfHero.data
         });
@@ -128,5 +128,45 @@ export class DeckState {
       heroOfDeckLoaded: true,
       heroOfDeckLoading: false
     });
+  }
+
+  @Action(SetHeroInDeck)
+  setDeck({ getState, patchState }: StateContext<DeckStateModel>, action: SetHeroInDeck) {
+    patchState({
+      deck: {
+        ...getState().deck,
+        hero: action.hero
+      }
+    });
+  }
+
+  @Action(AddCardInDeck)
+  addCardInDeck({ patchState, getState }: StateContext<DeckStateModel>, action: AddCardInDeck) {
+    patchState({
+      deck: {
+        ...getState().deck,
+        cards: this.addCard(action.card)
+      }
+    })
+  }
+
+  private addCard(card: ICardInDeck): ICardInDeck[] {
+    const deck = this.store.selectSnapshot(DeckState.deck);
+
+    if (deck.cards.length >= 30) {
+      return [...deck.cards];
+    }
+
+    if (!this.deckService.isCardExits(card)) {
+      return [...deck.cards, card];
+    } else {
+      const countInDeck = this.deckService.countOfCardsInDeck(card);
+
+      if (countInDeck < 2 && card.rarity.id !== 4) {
+        return [...deck.cards, card];
+      }
+    }
+
+    return [...deck.cards];
   }
 }

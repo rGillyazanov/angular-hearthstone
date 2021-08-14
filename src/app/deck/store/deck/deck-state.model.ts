@@ -1,9 +1,7 @@
-import { Hero, Mechanic, PackSet, Race, Rarity, Type } from "../../../shared/models/filters-types";
-import { IAllCards } from "../../../store/cards/cards-state.model";
-import { ICostCard } from "../../../store/card/card-state.model";
+import { Hero, Rarity } from "../../../shared/models/filters-types";
 
 export interface ICardInDeck {
-  cost: number | ICostCard | null,
+  cost: number | null,
   dbfId: number,
   id: number,
   id_card: string,
@@ -11,9 +9,15 @@ export interface ICardInDeck {
   rarity: Rarity,
 }
 
+export interface Deck {
+  cards: ICardInDeck[],
+  format: 1 | 2,
+  hero: Hero
+}
+
 export interface DeckStateModel {
-  hero: Hero,
-  cards: ICardInDeck[];
+  deck: Deck,
+  cards: ICardInDeck[]; // Карты доступные для добавления в колоду
   totalOfCards: number;
   cardsOfHeroLoading: boolean,
   cardsOfHeroLoaded: boolean

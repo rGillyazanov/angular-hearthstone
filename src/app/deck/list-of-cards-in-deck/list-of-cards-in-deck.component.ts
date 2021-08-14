@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ICard } from "../../store/card/card-state.model";
 import { CardsService } from "../../shared/services/cards/cards.service";
-import { ICardInDeck } from "../store/deck/deck-state.model";
+import { Deck, ICardInDeck } from "../store/deck/deck-state.model";
+import { Store } from "@ngxs/store";
+import { AddCardInDeck } from "../store/deck/deck.actions";
 
 @Component({
   selector: 'app-list-of-cards-in-deck',
@@ -11,13 +12,20 @@ import { ICardInDeck } from "../store/deck/deck-state.model";
 export class ListOfCardsInDeckComponent implements OnInit {
 
   @Input() cards: ICardInDeck[] | null;
+  @Input() deck: Deck | null;
 
-  constructor() { }
+  constructor(private store: Store) {
+  }
 
   ngOnInit(): void {
   }
 
   setImageCard(idCard: string) {
     return CardsService.setCardImage(idCard);
+  }
+
+  addCardInDeck(card: ICardInDeck) {
+    console.log(card);
+    this.store.dispatch(new AddCardInDeck(card));
   }
 }

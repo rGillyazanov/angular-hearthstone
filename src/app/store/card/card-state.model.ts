@@ -10,7 +10,7 @@ export interface ICard {
   artist: string,
   attack: number | null,
   collectible: number,
-  cost: number | ICostCard | null,
+  cost: number | null,
   dbfId: number,
   durability: boolean | null,
   flavor: string,
