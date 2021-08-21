@@ -8,6 +8,7 @@ import { DeckState } from "../store/deck/deck.state";
 import { GetCardsOfHero, GetHeroOfDeck } from "../store/deck/deck.actions";
 import { Deck, ICardInDeck } from "../store/deck/deck-state.model";
 import { DeckService } from "../services/deck.service";
+import { StateReset } from "ngxs-reset-plugin";
 
 @Component({
   selector: 'app-cards-of-deck',
@@ -26,6 +27,7 @@ export class CardsOfDeckComponent implements OnInit, OnDestroy {
   @Select(DeckState.heroOfDeckLoaded) heroLoaded$: Observable<boolean>;
 
   @Select(DeckState.deck) deck$: Observable<Deck>;
+  @Select(DeckState.countCardsInDeck) countCardsInDeck$: Observable<number>;
 
   constructor(private deckService: DeckService,
               private router: ActivatedRoute,
@@ -37,6 +39,10 @@ export class CardsOfDeckComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     ).subscribe(params => {
       const heroId = params['id'];
+      this.store.dispatch(
+        new StateReset(DeckState)
+      );
+      console.log(132);
       this.getHero(heroId);
     });
   }

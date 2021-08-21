@@ -22,6 +22,7 @@ import { appConfig } from "../config/app.config";
 import { appRoutes } from "./app.router";
 
 import { storeAppModule } from "./store/index.store";
+import { NgxsResetPluginModule } from "ngxs-reset-plugin";
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { storeAppModule } from "./store/index.store";
     NgxsStoragePluginModule.forRoot({
       key: 'auth.access_token'
     }),
+    NgxsResetPluginModule.forRoot(),
     NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxsLoggerPluginModule.forRoot(),
     ReactiveFormsModule,

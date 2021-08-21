@@ -1,4 +1,4 @@
-import { Action, Selector, State, StateContext, Store } from "@ngxs/store";
+import { Action, NgxsOnInit, Selector, State, StateContext, Store } from "@ngxs/store";
 import { finalize, tap } from "rxjs/operators";
 import { Injectable } from "@angular/core";
 
@@ -8,17 +8,18 @@ import {
   AddCardInDeck,
   CardsOfHeroLoaded,
   CardsOfHeroLoading,
-  GetCardsOfHero, GetHeroOfDeck, HeroOfDeckLoaded, HeroOfDeckLoading, SetHeroInDeck
+  GetCardsOfHero, GetHeroOfDeck, HeroOfDeckLoaded, HeroOfDeckLoading, SetHeroInDeck, SortedCardInDeck
 } from "./deck.actions";
 
 import { DeckService } from "../../services/deck.service";
 import { HeroesService } from "../../../shared/services/heroes/heroes.service";
+import { append, patch, updateItem } from "@ngxs/store/operators";
 
 @State<DeckStateModel>({
   name: 'deck',
   defaults: {
     deck: {
-      cards: [],
+      cards: new Array<{ card: ICardInDeck, count: number }>(),
       format: 1,
       hero: {}
     },
@@ -35,6 +36,13 @@ export class DeckState {
   @Selector()
   static deck(state: DeckStateModel): Deck {
     return state.deck;
+  }
+
+  @Selector()
+  static countCardsInDeck(state: DeckStateModel): number {
+    return state.deck.cards.reduce((previousValue, currentValue) => {
+      return previousValue + currentValue.count;
+    }, 0);
   }
 
   @Selector()
@@ -141,32 +149,62 @@ export class DeckState {
   }
 
   @Action(AddCardInDeck)
-  addCardInDeck({ patchState, getState }: StateContext<DeckStateModel>, action: AddCardInDeck) {
-    patchState({
-      deck: {
-        ...getState().deck,
-        cards: this.addCard(action.card)
-      }
-    })
+  addCardInDeck(ctx: StateContext<DeckStateModel>, action: AddCardInDeck) {
+    const deck = ctx.getState().deck;
+
+    const countCardsInDeck = deck.cards.reduce((previousValue, currentValue) => {
+      return previousValue + currentValue.count;
+    }, 0);
+
+    if (countCardsInDeck >= 30) {
+      return;
+    }
+
+    const countInDeck = this.deckService.countOfCardsInDeck(action.card);
+    const isCardExits = this.deckService.isCardExits(action.card);
+
+    if (isCardExits && countInDeck >= 2) {
+      console.log(1);
+      return;
+    } else if (!isCardExits) {
+      ctx.setState(patch({
+        deck: patch({
+          cards: append([{ card: action.card, count: 1 }])
+        })
+      }));
+      ctx.dispatch(new SortedCardInDeck());
+    } else if (countInDeck < 2 && action.card.rarity.id !== 4) {
+      ctx.setState(patch({
+        deck: patch({
+          cards: updateItem<{ card: ICardInDeck, count: number }>(
+            cardInDeck => cardInDeck?.card.dbfId === action.card.dbfId, { card: action.card, count: 2 })
+        })
+      }));
+      ctx.dispatch(new SortedCardInDeck());
+    }
   }
 
-  private addCard(card: ICardInDeck): ICardInDeck[] {
-    const deck = this.store.selectSnapshot(DeckState.deck);
+  @Action(SortedCardInDeck)
+  sortCardInDeck({ getState, setState }: StateContext<DeckStateModel>) {
+    /**
+     * Сортировка карт в колоде по мане и стоимости
+     * @param a
+     * @param b
+     */
+    const sortCards = (a: any, b: any) => {
+      const previous = a.card;
+      const current = b.card;
+      // @ts-ignore
+      return (current.cost < previous.cost) - (previous.cost < current.cost) || (current.name < previous.name) - (previous.name < current.name);
+    };
 
-    if (deck.cards.length >= 30) {
-      return [...deck.cards];
-    }
+    const cards = [...getState().deck.cards].sort(sortCards);
 
-    if (!this.deckService.isCardExits(card)) {
-      return [...deck.cards, card];
-    } else {
-      const countInDeck = this.deckService.countOfCardsInDeck(card);
-
-      if (countInDeck < 2 && card.rarity.id !== 4) {
-        return [...deck.cards, card];
-      }
-    }
-
-    return [...deck.cards];
+    setState(patch({
+      deck: patch({
+        cards: cards
+      })
+    }));
   }
 }
+

@@ -52,6 +52,10 @@ export class AddCardInDeck {
   }
 }
 
+export class SortedCardInDeck {
+  static readonly type = '[Deck] Sort card in deck';
+}
+
 export class RemoveCardFromDeck {
   static readonly type = '[Deck] Remove card from deck';
 

@@ -15,7 +15,7 @@
                class="heroIcon" [attr.alt]="deck.hero.name">
           <div class="ml-3 h5 mb-0 text-border text-white">{{ deck.hero.name }}</div>
         </div>
-        <span class="h4 mt-3 mb-0 font-weight-bold text-border text-white">{{ deck.cards.length }} / 30</span>
+        <span class="h4 mt-3 mb-0 font-weight-bold text-border text-white">{{ countCardsInDeck$ | async }} / 30</span>
         <div class="d-flex justify-content-center align-items-center" style="cursor: pointer"
              data-toggle="tooltip"
              data-placement="bottom" title="Нажмите, чтобы сменить формат колоды">
@@ -45,7 +45,7 @@
           <ng-container
             [ngTemplateOutlet]="cardInDeckImg"
             [ngTemplateOutletContext]="{
-              countOfCardInDeck: countOfCardInDeck(card),
+              countOfCardInDeck: countOfCardInDeck(card.card),
               card: card
             }"
           ></ng-container>
@@ -53,13 +53,13 @@
         <ng-template #cardInDeckImg let-countOfCardInDeck="countOfCardInDeck" let-card="card">
           <div
             class="card-tile"
-            [attr.aria-label]="card.name"
+            [attr.aria-label]="card.card.name"
             style="height: 34px; line-height: 34px; cursor: pointer"
           >
             <div class="card-gem"
                  style="width: 34px;">
               <span class="card-cost"
-                    style="font-size: 1.25em;">card.cost</span>
+                    style="font-size: 1.25em;">{{ card.card.cost }}</span>
             </div>
             <div class="card-frame">
               <img class="card-asset"
@@ -67,16 +67,16 @@
                     'count-one': countOfCardInDeck !== 2,
                     'count-two': countOfCardInDeck === 2
                     }"
-                   [src]="'https://art.hearthstonejson.com/v1/tiles/'+ card.id_card + '.png'"
+                   [src]="'https://art.hearthstonejson.com/v1/tiles/'+ card.card.id_card + '.png'"
                    [attr.alt]="card.name">
-              <div class="card-countbox" style="width: 24px;" *ngIf="countOfCardInDeck === 2 || card.rarity.id === 4">
-                <span class="card-count" style="font-size: 1.15em; top: -2px;" *ngIf="card.rarity.id === 4">★</span>
+              <div class="card-countbox" style="width: 24px;" *ngIf="countOfCardInDeck === 2 || card.card.rarity.id === 4">
+                <span class="card-count" style="font-size: 1.15em; top: -2px;" *ngIf="card.card.rarity.id === 4">★</span>
                 <span class="card-count" style="font-size: 1.15em; top: -2px;"
                       *ngIf="countOfCardInDeck === 2">{{ countOfCardInDeck }}</span>
               </div>
               <span class="card-fade-countbox"></span>
               <figcaption class="card-name"
-                          style="font-size: 0.9em; width: calc(100% - 28px);">{{ card.name }}</figcaption>
+                          style="font-size: 0.9em; width: calc(100% - 28px);">{{ card.card.name }}</figcaption>
             </div>
           </div>
         </ng-template>

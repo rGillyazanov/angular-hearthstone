@@ -25,7 +25,6 @@ export class ListOfCardsInDeckComponent implements OnInit {
   }
 
   addCardInDeck(card: ICardInDeck) {
-    console.log(card);
     this.store.dispatch(new AddCardInDeck(card));
   }
 }

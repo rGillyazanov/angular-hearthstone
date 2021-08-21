@@ -10,7 +10,7 @@ export interface ICardInDeck {
 }
 
 export interface Deck {
-  cards: ICardInDeck[],
+  cards: Array<{ card: ICardInDeck, count: number }>,
   format: 1 | 2,
   hero: Hero
 }

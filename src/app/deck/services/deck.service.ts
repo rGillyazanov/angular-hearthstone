@@ -26,30 +26,22 @@ export class DeckService {
 
   countOfCardsInDeck(card: ICardInDeck): number {
     const deck = this.store.selectSnapshot(DeckState.deck);
-    let count = 0;
-
-    deck.cards.forEach(cardInDeck => {
-      if (cardInDeck.dbfId === card.dbfId) {
-        count++;
-      }
-    });
-
-    return count;
+    return <number>deck?.cards?.find(cardInDeck => cardInDeck.card.dbfId === card.dbfId)?.count;
   }
 
   isCardExits(card: ICardInDeck) {
     const deck = this.store.selectSnapshot(DeckState.deck);
 
-    return deck.cards.some((cardInDeck) => {
-      return cardInDeck.dbfId === card.dbfId;
+    return deck.cards?.some((cardInDeck) => {
+      return cardInDeck.card.dbfId === card.dbfId;
     });
   }
 
   costOfDeck() {
     const deck = this.store.selectSnapshot(DeckState.deck);
 
-    return deck.cards.reduce((cost, cardInDeck) => {
-      return cost + CardsService.getCostOfCard(cardInDeck?.rarity?.id).common;
+    return deck.cards?.reduce((cost, cardInDeck) => {
+      return cost + CardsService.getCostOfCard(cardInDeck.card?.rarity?.id).common * cardInDeck.count;
     }, 0);
   }
 }
