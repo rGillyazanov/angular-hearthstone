@@ -5,7 +5,7 @@ import { takeUntil } from "rxjs/operators";
 
 import { Select, Store } from "@ngxs/store";
 import { DeckState } from "../store/deck/deck.state";
-import { GetCardsOfHero, GetHeroOfDeck } from "../store/deck/deck.actions";
+import { GetCardsOfHero, GetHeroOfDeck, RemoveCardFromDeck } from "../store/deck/deck.actions";
 import { Deck, ICardInDeck } from "../store/deck/deck-state.model";
 import { DeckService } from "../services/deck.service";
 import { StateReset } from "ngxs-reset-plugin";
@@ -65,8 +65,11 @@ export class CardsOfDeckComponent implements OnInit, OnDestroy {
     return this.deckService.countOfCardsInDeck(card);
   }
 
-  countOfDeck(): number {
+  costOfDeck(): number {
     return this.deckService.costOfDeck();
   }
 
+  removeCardFromDeck(card: ICardInDeck) {
+    this.store.dispatch(new RemoveCardFromDeck(card));
+  }
 }

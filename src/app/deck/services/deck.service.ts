@@ -29,6 +29,13 @@ export class DeckService {
     return <number>deck?.cards?.find(cardInDeck => cardInDeck.card.dbfId === card.dbfId)?.count;
   }
 
+  countAllOfCardsInDeck(): number {
+    const deck = this.store.selectSnapshot(DeckState.deck);
+    return deck.cards.reduce((previousValue, currentValue) => {
+      return previousValue + currentValue.count;
+    }, 0);
+  }
+
   isCardExits(card: ICardInDeck) {
     const deck = this.store.selectSnapshot(DeckState.deck);
 

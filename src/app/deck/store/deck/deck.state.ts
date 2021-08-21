@@ -1,4 +1,4 @@
-import { Action, NgxsOnInit, Selector, State, StateContext, Store } from "@ngxs/store";
+import { Action, Selector, State, StateContext, Store } from "@ngxs/store";
 import { finalize, tap } from "rxjs/operators";
 import { Injectable } from "@angular/core";
 
@@ -8,12 +8,18 @@ import {
   AddCardInDeck,
   CardsOfHeroLoaded,
   CardsOfHeroLoading,
-  GetCardsOfHero, GetHeroOfDeck, HeroOfDeckLoaded, HeroOfDeckLoading, SetHeroInDeck, SortedCardInDeck
+  GetCardsOfHero,
+  GetHeroOfDeck,
+  HeroOfDeckLoaded,
+  HeroOfDeckLoading,
+  RemoveCardFromDeck,
+  SetHeroInDeck,
+  SortedCardInDeck
 } from "./deck.actions";
 
 import { DeckService } from "../../services/deck.service";
 import { HeroesService } from "../../../shared/services/heroes/heroes.service";
-import { append, patch, updateItem } from "@ngxs/store/operators";
+import { append, patch, removeItem, updateItem } from "@ngxs/store/operators";
 
 @State<DeckStateModel>({
   name: 'deck',
@@ -150,11 +156,7 @@ export class DeckState {
 
   @Action(AddCardInDeck)
   addCardInDeck(ctx: StateContext<DeckStateModel>, action: AddCardInDeck) {
-    const deck = ctx.getState().deck;
-
-    const countCardsInDeck = deck.cards.reduce((previousValue, currentValue) => {
-      return previousValue + currentValue.count;
-    }, 0);
+    const countCardsInDeck = this.deckService.countAllOfCardsInDeck();
 
     if (countCardsInDeck >= 30) {
       return;
@@ -164,7 +166,6 @@ export class DeckState {
     const isCardExits = this.deckService.isCardExits(action.card);
 
     if (isCardExits && countInDeck >= 2) {
-      console.log(1);
       return;
     } else if (!isCardExits) {
       ctx.setState(patch({
@@ -205,6 +206,34 @@ export class DeckState {
         cards: cards
       })
     }));
+  }
+
+  @Action(RemoveCardFromDeck)
+  removeCardFromDeck({ setState }: StateContext<DeckStateModel>, action: RemoveCardFromDeck) {
+    const countInDeck = this.deckService.countOfCardsInDeck(action.card);
+
+    console.log(countInDeck);
+
+    if (countInDeck === 1) {
+      setState(patch({
+        deck: patch({
+          cards: removeItem<{ card: ICardInDeck, count: number }>(
+            cardInDeck => cardInDeck?.card.dbfId === action.card.dbfId
+          )
+        })
+      }));
+    } else if (countInDeck === 2) {
+      setState(patch({
+        deck: patch({
+          cards: updateItem<{ card: ICardInDeck, count: number }>(
+            cardInDeck => cardInDeck?.card.dbfId === action.card.dbfId, {
+              card: action.card,
+              count: 1
+            }
+          )
+        })
+      }));
+    }
   }
 }
 

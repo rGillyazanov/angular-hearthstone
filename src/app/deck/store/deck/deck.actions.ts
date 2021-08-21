@@ -59,6 +59,6 @@ export class SortedCardInDeck {
 export class RemoveCardFromDeck {
   static readonly type = '[Deck] Remove card from deck';
 
-  constructor(public dbfId: number) {
+  constructor(public card: ICardInDeck) {
   }
 }
