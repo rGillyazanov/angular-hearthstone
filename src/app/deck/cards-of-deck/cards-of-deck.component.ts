@@ -19,7 +19,12 @@ import { StateReset } from "ngxs-reset-plugin";
 export class CardsOfDeckComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<boolean>();
 
+  heroId: number;
+
   @Select(DeckState.cards) cards$: Observable<ICardInDeck[]>;
+  @Select(DeckState.totalOfCards) totalOfCards$: Observable<number>;
+  @Select(DeckState.currentPage) currentPage$: Observable<number>;
+  @Select(DeckState.perPage) perPage$: Observable<number>;
   @Select(DeckState.cardsOfHeroLoading) cardsLoading$: Observable<boolean>;
   @Select(DeckState.cardsOfHeroLoaded) cardsLoaded$: Observable<boolean>;
 
@@ -38,18 +43,17 @@ export class CardsOfDeckComponent implements OnInit, OnDestroy {
     this.router.params.pipe(
       takeUntil(this.destroy$)
     ).subscribe(params => {
-      const heroId = params['id'];
-      this.store.dispatch(
-        new StateReset(DeckState)
-      );
-      console.log(132);
-      this.getHero(heroId);
+      this.heroId = +params['id'];
+      this.getHero(this.heroId);
     });
   }
 
   ngOnDestroy(): void {
     this.destroy$.next(true);
     this.destroy$.complete();
+    this.store.dispatch(
+      new StateReset(DeckState)
+    );
   }
 
   getHero(id: number) {

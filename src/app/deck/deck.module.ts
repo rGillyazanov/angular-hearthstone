@@ -8,6 +8,7 @@ import { CardsOfDeckComponent } from './cards-of-deck/cards-of-deck.component';
 import { ListOfCardsInDeckComponent } from './list-of-cards-in-deck/list-of-cards-in-deck.component';
 import { NgxsModule } from "@ngxs/store";
 import { DeckState } from "./store/deck/deck.state";
+import { NgxPaginationModule } from "ngx-pagination";
 
 @NgModule({
   declarations: [
@@ -16,12 +17,13 @@ import { DeckState } from "./store/deck/deck.state";
     CardsOfDeckComponent,
     ListOfCardsInDeckComponent
   ],
-  imports: [
-    CommonModule,
-    DeckRoutingModule,
-    NgxsModule.forFeature([
-      DeckState
-    ])
-  ]
+    imports: [
+        CommonModule,
+        DeckRoutingModule,
+        NgxsModule.forFeature([
+            DeckState
+        ]),
+        NgxPaginationModule
+    ]
 })
 export class DeckModule { }

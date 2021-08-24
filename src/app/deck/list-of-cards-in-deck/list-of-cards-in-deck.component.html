@@ -1,5 +1,8 @@
-<div class="row">
-  <div *ngFor="let card of cards"
+<div class="row" *ngIf="cards && totalCards">
+  <div *ngFor="let card of cards | paginate: { id: 'listOfCards',
+                                                    itemsPerPage: perPage,
+                                                    currentPage: currentPage,
+                                                    totalItems: totalCards }"
        class="col-lg-3 col-md-4 col-sm-6 col-xs-12"
   >
     <img
@@ -14,5 +17,10 @@
       [attr.alt]="card.name"
       class="card-scale cursor-pointer img-fluid image-card-rounded">
   </div>
+
+  <pagination-controls (pageChange)="getPage($event)"
+                       previousLabel="Назад"
+                       nextLabel="Следующая"
+                       id="listOfCards"></pagination-controls>
 </div>
 

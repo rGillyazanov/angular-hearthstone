@@ -31,6 +31,8 @@ import { append, patch, removeItem, updateItem } from "@ngxs/store/operators";
     },
     cards: [],
     totalOfCards: 0,
+    currentPage: 0,
+    perPage: 0,
     cardsOfHeroLoading: false,
     cardsOfHeroLoaded: false,
     heroOfDeckLoading: false,
@@ -42,6 +44,21 @@ export class DeckState {
   @Selector()
   static deck(state: DeckStateModel): Deck {
     return state.deck;
+  }
+
+  @Selector()
+  static totalOfCards(state: DeckStateModel): number {
+    return state.totalOfCards;
+  }
+
+  @Selector()
+  static currentPage(state: DeckStateModel): number {
+    return state.currentPage;
+  }
+
+  @Selector()
+  static perPage(state: DeckStateModel): number {
+    return state.perPage;
   }
 
   @Selector()
@@ -99,9 +116,11 @@ export class DeckState {
   getCardsOfHero(ctx: StateContext<DeckStateModel>, action: GetCardsOfHero) {
     ctx.dispatch(new CardsOfHeroLoading());
 
-    return this.deckService.getCardsOfHero(action.heroId).pipe(
+    return this.deckService.getCardsOfHero(action.heroId, action.page).pipe(
       tap((cardsOfHero) => {
         ctx.patchState({
+          perPage: cardsOfHero.per_page,
+          currentPage: cardsOfHero.current_page,
           totalOfCards: cardsOfHero.total,
           cards: cardsOfHero.data
         });

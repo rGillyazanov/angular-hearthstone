@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs";
 
 import { map } from "rxjs/operators";
@@ -18,8 +18,16 @@ export class DeckService {
               private http: HttpClient,
               private store: Store) { }
 
-  getCardsOfHero(id: number): Observable<any> {
-    return this.http.get<IResponseServer>('/api/cards/hero/' + id).pipe(
+  getCardsOfHero(id: number, page?: number): Observable<any> {
+    let httpParams = new HttpParams();
+
+    if (page) {
+      httpParams = httpParams.append('page', page);
+    }
+
+    return this.http.get<IResponseServer>('/api/cards/hero/' + id, {
+      params: httpParams
+    }).pipe(
       map(response => (response.data))
     );
   }

@@ -2,12 +2,16 @@
   <div class="col-lg-9 col-md-12">
     <app-list-of-cards-in-deck
       *ngIf="cardsLoaded$ | async"
+      [heroId]="heroId"
       [deck]="deck$ | async"
       [cards]="cards$ | async"
+      [currentPage]="currentPage$ | async"
+      [perPage]="perPage$ | async"
+      [totalCards]="totalOfCards$ | async"
     ></app-list-of-cards-in-deck>
   </div>
   <div class="col-lg-3 col-md-12"
-       *ngIf="(cardsLoaded$ | async) && (heroLoaded$ | async) && (deck$ | async) as deck">
+       *ngIf="(heroLoaded$ | async) && (deck$ | async) as deck">
     <div class="position-sticky deck__block" style="top: 40px;">
       <div class="d-flex flex-column text-center mt-4">
         <div class="d-flex justify-content-center align-items-center">

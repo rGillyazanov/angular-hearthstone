@@ -4,7 +4,7 @@ import { ICardInDeck } from "./deck-state.model";
 export class GetCardsOfHero {
   static readonly type = '[Deck] Get cards of hero';
 
-  constructor(public heroId: number) {
+  constructor(public heroId: number, public page?: number) {
   }
 }
 

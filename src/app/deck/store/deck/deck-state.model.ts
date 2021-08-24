@@ -19,6 +19,8 @@ export interface DeckStateModel {
   deck: Deck,
   cards: ICardInDeck[]; // Карты доступные для добавления в колоду
   totalOfCards: number;
+  currentPage: number;
+  perPage: number;
   cardsOfHeroLoading: boolean,
   cardsOfHeroLoaded: boolean
   heroOfDeckLoading: boolean,
