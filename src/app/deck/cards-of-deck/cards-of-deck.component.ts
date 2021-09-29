@@ -5,7 +5,7 @@ import { takeUntil } from "rxjs/operators";
 
 import { Select, Store } from "@ngxs/store";
 import { DeckState } from "../store/deck/deck.state";
-import { GetCardsOfHero, GetHeroOfDeck, RemoveCardFromDeck } from "../store/deck/deck.actions";
+import { GetCardsOfHero, GetCodeOfDeck, GetHeroOfDeck, RemoveCardFromDeck } from "../store/deck/deck.actions";
 import { Deck, ICardInDeck } from "../store/deck/deck-state.model";
 import { DeckService } from "../services/deck.service";
 import { StateReset } from "ngxs-reset-plugin";
@@ -79,18 +79,6 @@ export class CardsOfDeckComponent implements OnInit, OnDestroy {
   }
 
   getDeckCode() {
-    const stateDeck = this.store.selectSnapshot(DeckState.deck);
-
-    const deck = stateDeck.cards.reduce((acc, card) => {
-      return [...acc, [card.card.dbfId, card.count]];
-    }, new Array<Array<number>>()) as DeckList;
-
-    const encodeDeck: DeckDefinition = {
-      cards: deck,
-      format: 1,
-      heroes: [this.heroId]
-    };
-
-    console.log(encode(encodeDeck));
+    this.store.dispatch(new GetCodeOfDeck());
   }
 }

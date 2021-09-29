@@ -8,7 +8,7 @@ import {
   AddCardInDeck,
   CardsOfHeroLoaded,
   CardsOfHeroLoading,
-  GetCardsOfHero,
+  GetCardsOfHero, GetCodeOfDeck,
   GetHeroOfDeck,
   HeroOfDeckLoaded,
   HeroOfDeckLoading,
@@ -20,6 +20,7 @@ import {
 import { DeckService } from "../../services/deck.service";
 import { HeroesService } from "../../../shared/services/heroes/heroes.service";
 import { append, patch, removeItem, updateItem } from "@ngxs/store/operators";
+import { DeckDefinition, DeckList, encode } from 'deckstrings';
 
 @State<DeckStateModel>({
   name: 'deck',
@@ -231,8 +232,6 @@ export class DeckState {
   removeCardFromDeck({ setState }: StateContext<DeckStateModel>, action: RemoveCardFromDeck) {
     const countInDeck = this.deckService.countOfCardsInDeck(action.card);
 
-    console.log(countInDeck);
-
     if (countInDeck === 1) {
       setState(patch({
         deck: patch({
@@ -253,6 +252,21 @@ export class DeckState {
         })
       }));
     }
+  }
+
+  @Action(GetCodeOfDeck)
+  getCodeOfDeck({ getState }: StateContext<DeckStateModel>) {
+    const deck = getState().deck.cards.reduce((acc, card) => {
+      return [...acc, [card.card.dbfId, card.count]];
+    }, new Array<Array<number>>()) as DeckList;
+
+    const encodeDeck: DeckDefinition = {
+      cards: deck,
+      format: 1,
+      heroes: [getState().deck.hero.id as number]
+    };
+
+    console.log(encode(encodeDeck));
   }
 }
 

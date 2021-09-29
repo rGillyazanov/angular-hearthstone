@@ -15,6 +15,10 @@ export class GetHeroOfDeck {
   }
 }
 
+export class GetCodeOfDeck {
+  static readonly type = '[Deck] Get code of deck';
+}
+
 export class CardsOfHeroLoading {
   static readonly type = '[Deck] Cards of hero loading...';
 }
