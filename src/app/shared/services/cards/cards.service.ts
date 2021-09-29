@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from "@angular/common/http";
-import { Observable, Subject } from "rxjs";
+import { Observable } from "rxjs";
 import { CardsStateModel } from "../../../store/cards/cards-state.model";
 import { CardsFilterStateModel } from "../../../store/cards-filter/cards-filter-state.model";
 import { map } from "rxjs/operators";
@@ -10,8 +10,6 @@ import { ICostCard } from "../../../store/card/card-state.model";
   providedIn: 'root'
 })
 export class CardsService {
-  currentFiltersOfCards = new Subject<CardsFilterStateModel>();
-
   constructor(private http: HttpClient) {
   }
 

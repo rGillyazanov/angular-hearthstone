@@ -5,8 +5,7 @@ import { Select, Store } from "@ngxs/store";
 import { GetCardsOfPage } from "../../../store/cards/cards.actions";
 import { CardsState } from "../../../store/cards/cards.state";
 import { Observable } from "rxjs";
-import { CardsFilterStateModel } from "../../../store/cards-filter/cards-filter-state.model";
-import { Router } from "@angular/router";
+import { CardsFilterState } from '../../../store/cards-filter/cards-filter.state';
 
 @Component({
   selector: 'app-cards',
@@ -20,23 +19,12 @@ export class CardsComponent implements OnInit {
   @Input() perPage: any;
   @Input() currentPage: any;
 
-  cardsFilter: CardsFilterStateModel;
   @Select(CardsState.loading) loadingCards$: Observable<boolean>;
   @Select(CardsState.loaded) loadedCards$: Observable<boolean>;
 
-  constructor(private store: Store,
-              private router: Router,
-              private cardsService: CardsService) { }
+  constructor(private store: Store) { }
 
   ngOnInit(): void {
-    /**
-     * Объект currentFiltersOfCards содержит состояние фильтра карт.
-     * Используется для того, чтобы сохранить текущее состояние, которое будет использоваться
-     * для передачи параметров в запрос при осуществлении пагинации по результатам фильтрации.
-     */
-    this.cardsService.currentFiltersOfCards.subscribe(filter => {
-      this.cardsFilter = filter;
-    });
   }
 
   setCardImage(idCard: string) {
@@ -44,9 +32,11 @@ export class CardsComponent implements OnInit {
   }
 
   getPage(page: number) {
+    const filter = this.store.selectSnapshot(CardsFilterState);
+
     this.store.dispatch(new GetCardsOfPage({
       page: page,
-      filteredParameters: this.cardsFilter
+      filteredParameters: filter
     }));
   }
 }
