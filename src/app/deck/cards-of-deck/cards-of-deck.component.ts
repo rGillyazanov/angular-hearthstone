@@ -9,6 +9,7 @@ import { GetCardsOfHero, GetHeroOfDeck, RemoveCardFromDeck } from "../store/deck
 import { Deck, ICardInDeck } from "../store/deck/deck-state.model";
 import { DeckService } from "../services/deck.service";
 import { StateReset } from "ngxs-reset-plugin";
+import { DeckDefinition, DeckList, encode, FormatType } from 'deckstrings';
 
 @Component({
   selector: 'app-cards-of-deck',
@@ -75,5 +76,21 @@ export class CardsOfDeckComponent implements OnInit, OnDestroy {
 
   removeCardFromDeck(card: ICardInDeck) {
     this.store.dispatch(new RemoveCardFromDeck(card));
+  }
+
+  getDeckCode() {
+    const stateDeck = this.store.selectSnapshot(DeckState.deck);
+
+    const deck = stateDeck.cards.reduce((acc, card) => {
+      return [...acc, [card.card.dbfId, card.count]];
+    }, new Array<Array<number>>()) as DeckList;
+
+    const encodeDeck: DeckDefinition = {
+      cards: deck,
+      format: 1,
+      heroes: [this.heroId]
+    };
+
+    console.log(encode(encodeDeck));
   }
 }

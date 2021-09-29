@@ -9,8 +9,6 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { LayoutsModule } from "./layouts/layouts.module";
 import { RouterModule } from "@angular/router";
 import { AuthModule } from "./auth/auth.module";
-import { NgxPaginationModule } from "ngx-pagination";
-import { NgSelectModule } from "@ng-select/ng-select";
 import { CardsModule } from "./cards/cards.module";
 
 import { AppComponent } from './app.component';

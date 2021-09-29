@@ -11,7 +11,7 @@ export interface ICardInDeck {
 
 export interface Deck {
   cards: Array<{ card: ICardInDeck, count: number }>,
-  format: 1 | 2,
+  format: 1 | 2 | 3,
   hero: Hero
 }
 

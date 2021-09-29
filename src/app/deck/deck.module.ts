@@ -17,13 +17,14 @@ import { NgxPaginationModule } from "ngx-pagination";
     CardsOfDeckComponent,
     ListOfCardsInDeckComponent
   ],
-    imports: [
-        CommonModule,
-        DeckRoutingModule,
-        NgxsModule.forFeature([
-            DeckState
-        ]),
-        NgxPaginationModule
-    ]
+  imports: [
+    CommonModule,
+    DeckRoutingModule,
+    NgxsModule.forFeature([
+      DeckState
+    ]),
+    NgxPaginationModule
+  ]
 })
-export class DeckModule { }
+export class DeckModule {
+}
