@@ -8,6 +8,7 @@ import { ICardInDeck } from "../store/deck/deck-state.model";
 import { Store } from "@ngxs/store";
 import { DeckState } from "../store/deck/deck.state";
 import { CardsService } from "../../shared/services/cards/cards.service";
+import { FormatType } from 'deckstrings';
 
 @Injectable({
   providedIn: 'root'
@@ -18,11 +19,15 @@ export class DeckService {
               private http: HttpClient,
               private store: Store) { }
 
-  getCardsOfHero(id: number, page?: number): Observable<any> {
+  getCardsOfHero(id: number, page?: number, format?: FormatType): Observable<any> {
     let httpParams = new HttpParams();
 
     if (page) {
       httpParams = httpParams.append('page', page);
+    }
+
+    if (format) {
+      httpParams = httpParams.append('format', format);
     }
 
     return this.http.get<IResponseServer>('/api/cards/hero/' + id, {

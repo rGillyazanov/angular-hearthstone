@@ -18,9 +18,11 @@
       class="card-scale cursor-pointer img-fluid image-card-rounded">
   </div>
 
-  <pagination-controls (pageChange)="getPage($event)"
-                       previousLabel="Назад"
-                       nextLabel="Следующая"
-                       id="listOfCards"></pagination-controls>
+  <div class="d-flex justify-content-center">
+    <pagination-controls (pageChange)="getPage($event)"
+                         previousLabel="Назад"
+                         nextLabel="Следующая"
+                         id="listOfCards"></pagination-controls>
+  </div>
 </div>
 

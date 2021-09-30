@@ -5,11 +5,17 @@ import { takeUntil } from "rxjs/operators";
 
 import { Select, Store } from "@ngxs/store";
 import { DeckState } from "../store/deck/deck.state";
-import { GetCardsOfHero, GetCodeOfDeck, GetHeroOfDeck, RemoveCardFromDeck } from "../store/deck/deck.actions";
+import {
+  ChangeFormatOfDeck,
+  GetCardsOfHero,
+  GetCodeOfDeck,
+  GetHeroOfDeck,
+  RemoveCardFromDeck
+} from "../store/deck/deck.actions";
 import { Deck, ICardInDeck } from "../store/deck/deck-state.model";
 import { DeckService } from "../services/deck.service";
 import { StateReset } from "ngxs-reset-plugin";
-import { DeckDefinition, DeckList, encode, FormatType } from 'deckstrings';
+import { FormatType } from 'deckstrings';
 
 @Component({
   selector: 'app-cards-of-deck',
@@ -80,5 +86,10 @@ export class CardsOfDeckComponent implements OnInit, OnDestroy {
 
   getDeckCode() {
     this.store.dispatch(new GetCodeOfDeck());
+  }
+
+  changeDeckFormat(format: FormatType) {
+    console.log(format);
+    this.store.dispatch(new ChangeFormatOfDeck(format));
   }
 }

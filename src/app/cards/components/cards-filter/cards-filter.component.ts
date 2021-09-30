@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Hero, Mechanic, PackSet, Race, Rarity, Type } from "../../../shared/models/filters-types";
 import { Observable, Subject } from "rxjs";
-import { Select, Store } from "@ngxs/store";
+import { Actions, ofActionSuccessful, Select, Store } from "@ngxs/store";
 
 import { FiltersCards } from "../../../store/cards/cards.actions";
 
@@ -27,6 +27,8 @@ import {
   SetSort,
   SetType
 } from "../../../store/cards-filter/cards-filter.actions";
+import { CardsService } from '../../../shared/services/cards/cards.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-cards-filter',
@@ -54,10 +56,19 @@ export class CardsFilterComponent implements OnInit, OnDestroy {
   @Select(CardsFilterState.cost) cost$: Observable<number>;
   @Select(CardsFilterState.health) health$: Observable<number>;
 
-  constructor(private store: Store) {
+  constructor(private store: Store,
+              private actions: Actions,
+              private cardsService: CardsService) {
   }
 
   ngOnInit(): void {
+    this.actions.pipe(
+      ofActionSuccessful(FiltersCards),
+      takeUntil(this.destroy$)
+    ).subscribe(() => {
+      const filterState = this.store.selectSnapshot(CardsFilterState);
+      this.cardsService.currentFiltersOfCards.next(filterState);
+    });
   }
 
   ngOnDestroy(): void {

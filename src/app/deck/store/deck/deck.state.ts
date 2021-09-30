@@ -7,7 +7,7 @@ import { Deck, DeckStateModel, ICardInDeck } from "./deck-state.model";
 import {
   AddCardInDeck,
   CardsOfHeroLoaded,
-  CardsOfHeroLoading,
+  CardsOfHeroLoading, ChangeFormatOfDeck,
   GetCardsOfHero, GetCodeOfDeck,
   GetHeroOfDeck,
   HeroOfDeckLoaded,
@@ -21,6 +21,7 @@ import { DeckService } from "../../services/deck.service";
 import { HeroesService } from "../../../shared/services/heroes/heroes.service";
 import { append, patch, removeItem, updateItem } from "@ngxs/store/operators";
 import { DeckDefinition, DeckList, encode } from 'deckstrings';
+import { StateReset } from 'ngxs-reset-plugin';
 
 @State<DeckStateModel>({
   name: 'deck',
@@ -117,7 +118,7 @@ export class DeckState {
   getCardsOfHero(ctx: StateContext<DeckStateModel>, action: GetCardsOfHero) {
     ctx.dispatch(new CardsOfHeroLoading());
 
-    return this.deckService.getCardsOfHero(action.heroId, action.page).pipe(
+    return this.deckService.getCardsOfHero(action.heroId, action.page, action.format).pipe(
       tap((cardsOfHero) => {
         ctx.patchState({
           perPage: cardsOfHero.per_page,
@@ -262,11 +263,26 @@ export class DeckState {
 
     const encodeDeck: DeckDefinition = {
       cards: deck,
-      format: 1,
+      format: getState().deck.format,
       heroes: [getState().deck.hero.id as number]
     };
 
     console.log(encode(encodeDeck));
+  }
+
+  @Action(ChangeFormatOfDeck)
+  changeFormatOfDeck(ctx: StateContext<DeckStateModel>, action: ChangeFormatOfDeck) {
+    const state = ctx.getState();
+
+    ctx.patchState({
+      deck: {
+        ...state.deck,
+        cards: [],
+        format: action.format
+      }
+    });
+
+    ctx.dispatch(new GetCardsOfHero(state.deck.hero.id as number, state.currentPage, state.deck.format));
   }
 }
 

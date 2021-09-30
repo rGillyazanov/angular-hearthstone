@@ -1,10 +1,11 @@
 import { Hero } from "../../../shared/models/filters-types";
 import { ICardInDeck } from "./deck-state.model";
+import { FormatType } from 'deckstrings';
 
 export class GetCardsOfHero {
   static readonly type = '[Deck] Get cards of hero';
 
-  constructor(public heroId: number, public page?: number) {
+  constructor(public heroId: number, public page?: number, public format?: FormatType) {
   }
 }
 
@@ -45,7 +46,7 @@ export class SetHeroInDeck {
 export class ChangeFormatOfDeck {
   static readonly type = '[Deck] Format of deck changed';
 
-  constructor(public format: 1 | 2) {
+  constructor(public format: FormatType) {
   }
 }
 
